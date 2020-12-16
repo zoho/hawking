@@ -1,0 +1,7 @@
+We gratefully acknowledge the following people and organizations as we are using Stanford Corenlp in
+Hawking time parser:
+Jenny Rose Finkel
+Trond Grenager
+Christopher Manning
+Stanford NLP Group
+Please find below a link to their GitHub page: https://github.com/stanfordnlp/CoreNLP
