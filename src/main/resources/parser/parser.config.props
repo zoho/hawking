@@ -1,0 +1,246 @@
+#location of the training file
+trainFile = /parser/parser_training.tsv
+
+#location where you would like to save (serialize to) your
+#classifier; adding .gz at the end automatically gzips the file,
+#making it faster and smaller
+serializeTo = /parser/parser.crf.ser.gz
+
+#structure of your training file; this tells the classifier
+#that the word is in column 0 and the correct answer is in
+#column 1
+map = word=0,answer=1
+
+# The number of words on each side of the current word that are included in the disjunction features
+disjunctionWidth = 9
+
+# Include in features giving disjunctions of words anywhere in the left or right disjunctionWidth
+# words (preserving direction but not position)
+useDisjunctive = true
+
+# Gives you feature for w
+useWord = true
+
+# Include word and tag pair features
+useWordTag = true
+
+# Gives you feature for (pw,c), and together with other options enables other previous features, such as (pt,c) [with useTags)
+usePrev = true
+
+# Gives you feature for (nw,c), and together with other options enables other next features, such as (nt,c) [with useTags)
+useNext = true
+
+# Gives you features for (t,c), (pt,c) [if usePrev], (nt,c) [if useNext]
+useTags = true
+
+# Gives you features for (pw, w, c) and (w, nw, c)
+useWordPairs = true
+
+# Gives you features (pt, t, nt, c), (t, nt, c), (pt, t, c)
+#useSymTags = false
+#useSymWordPairs = false
+
+# Use extra second order class sequence features when previous is CoNLL boundary, so entity knows it can span boundary.
+#useBoundarySequences = false
+
+# As an override to whatever other options are in effect, deletes all features other than
+# C and CpC clique features when building the classifier
+#strictlyFirstOrder = false
+
+# Include in features giving disjunctions of words anywhere in the left or
+# right wideDisjunctionWidth words
+# (preserving direction but not position)
+#useWideDisjunctive = false
+#wideDisjunctionWidth = 8
+
+# Use combination of initial position in sentence and class (and word shape)
+# as a feature. (Doesn't seem to help.)
+#useBeginSent = true
+
+# Iff the prev word is of length 3 or less, add an extra feature that combines
+# the word two back and the current word's shape. Weird!
+#useLastRealWord = false
+#useNextRealWord = false
+
+# Does not use any class combination features using previous classes if this is false
+#usePrevSequences = true
+
+# Does not use any class combination features using next classes if this is false
+#useNextSequences = true
+
+# Use plain higher-order state sequences out to minimum of length or maxLeft
+#useLongSequences = false
+
+# Does not use any class combination features if this is false
+#useSequences = true
+
+# Use first, second, and third order class and tag sequence interaction features
+#useTaggySequences = false
+
+# Add in sequences of tags with just current class features
+#useExtraTaggySequences = false
+
+# Add in terms that join sequences of 2 or 3 tags with the current shape
+#useTaggySequencesShapeInteraction = false
+
+# Don't extend the range of useTaggySequences when maxLeft is increased.
+# dontExtendTaggy = false
+
+# Either "none" for no wordShape use, or the name of a word shape function recognized by
+# WordShapeClassifier.lookupShaper(String)
+#
+# https://github.com/stanfordnlp/CoreNLP/blob/master/src/edu/stanford/nlp/process/WordShapeClassifier.java
+wordShape = "chris2useLC"
+
+# Include features giving disjunctions of word shapes anywhere in the left or right disjunctionWidth
+# words (preserving direction but not position)
+useDisjShape = true
+
+# Conjoin shape with tag or position
+useShapeConjunctions = true
+
+# Include in features giving disjunctions of words anywhere in the left or right disjunctionWidth
+# words (preserving direction but not position) interacting with the word shape of the current word
+useDisjunctiveShapeInteraction = false
+
+# Some first order word shape patterns.
+# useTypeySequences = true
+
+# If set, convert the labeling of classes (but not the background) into one of several alternate encodings
+# (IO, IOB1, IOB2, IOE1, IOE2, SBIEO, with a S(ingle), B(eginning), E(nding), I(nside) 4-way classification for each class.
+# By default, we either do no re-encoding, or the CoNLLDocumentIteratorFactory does a lossy encoding as IO.
+# Note that this is all CoNLL-specific, and depends on their way of prefix encoding classes, and is only implemented
+# by the CoNLLDocumentIteratorFactory.
+# entitySubclassification = "IOB2"
+
+# If true, rather than undoing a recoding of entity tag subtypes (such as BIO variants), just leave them in the output.
+#retainEntitySubclassification = true
+
+# Make features from letter n-grams, i.e., substrings of the word
+useNGrams = true
+
+# Make features from letter n-grams only lowercase
+#lowercaseNGrams = true
+
+# Remove hyphens before making features from letter n-grams
+dehyphenateNGrams = true
+
+# Conjoin word shape and n-gram features
+conjoinShapeNGrams = true
+
+# Use letter n-grams for the previous and current words in the CpC clique. This feature helps languages such as Chinese, but not so much for English
+useNeighborNGrams = true
+
+# If true, record the NGram features that correspond to a String (under the current option settings) and reuse rather than recalculating if the String is seen again.
+cacheNGrams = true
+
+# Do not include character n-gram features for n-grams that contain neither the beginning or end of the word
+noMidNGrams = true
+
+# If this number is positive, n-grams above this size will not be used in the model
+#maxNGramLeng = -1
+
+useGazettes = true
+
+# one or more filenames (names separated by a comma, semicolon or space).
+gazette=/parser/date-gazette.txt;
+
+# If true, a gazette feature fires when all tokens of a gazette entry match
+cleanGazette = true
+
+# If true, a gazette feature fires when any token of a gazette entry matches
+sloppyGazette = false
+
+# undocumented features, but part of the featuresC() method in NERFeatureFactory.java
+#checkNameList=true
+#lastNameList=resources/gazettes/lastNames.txt
+#maleNameList=resources/gazettes/all-first-names.txt
+#femaleNameList=resources/gazettes/all-first-names.txt
+
+# Match a word against a list of name titles (Mr, Mrs, etc.). Doesn't really seem to help.
+# useTitle = true
+
+# Match a word against a better list of English name titles (Mr, Mrs, etc.). Still doesn't really seem to help.
+# useTitle2 = true
+
+# This is a very engineered feature designed to capture multiple references to names
+useOccurrencePatterns = true
+
+# Load a file of distributional similarity classes (specified by distSimLexicon) and use it for features
+useDistSim = true
+
+# Files should be formatted as tab separated rows where each row is a word/class pair. alexclark=word first, terrykoo=class first
+distSimFileFormat = terrykoo
+
+# The file to be loaded for distsim classes.
+distSimLexicon = parser/date-gazette.txt
+
+# keep word case when reading from the lexicon
+casedDistSim = false
+
+# parameters for Orthant-Wise Limited-memory Quasi-Newton algorithm (OWL-QN)
+useOWLQN = true
+
+# L1-prior used in QNMinimizer's OWLQN
+priorLambda = 0.1
+
+# terminate on maximum number of iteration
+maxQNItr = 125
+
+# Convergence tolerance in optimization
+tolerance = 1e-4
+
+# parameters for Stochastic Gradient Descent
+#useInPlaceSGD = false
+
+# If this number is greater than 0, specifies the number of SGD passes over entire training set) to
+# do before giving up (default is 50). Can be smaller if sample size is very large.
+#SGDPasses = 100
+
+# If this number is greater than 0, specifies the number of samples to use for tuning (default is 1000).
+#tuneSampleSize = 1000
+
+# ???
+#sigma = 20
+
+# Stochastic Batch Gradient Descent Size
+#stochasticBatchSize = 15
+
+# Use SGD (SGD version selected by useInPlaceSGD or useSGD) for a certain number of passes (SGDPasses)
+# and then switches to QN. Gives the quick initial convergence of SGD, with the desired convergence
+# criterion of QN (there is some ramp up time for QN). NOTE: Remember to set useQN to false
+#useSGDtoQN = false
+#useQN = true
+
+# If this is true, capitalization of day and month names is normalized to lowercase
+normalizeTerms = true
+
+# If this is true, capitalization of day and month names is normalized to lowercase
+normalizeTimex = true
+
+# Include the lemma of a word as a feature.
+#useLemmas = false
+
+# Include the previous/next lemma of a word as a feature.
+#usePrevNextLemmas = false
+
+# Include the lemma of a word as a feature.
+#useLemmaAsWord = false
+
+# A parameter to the printing style, which may give, for example the number of parameters to print
+printClassifierParam = 100
+
+# Print out all feature/class pairs and their weight, and then for each input data point,
+# print justification (weights) for active features
+justify = true
+
+# Print out all the features generated by the classifier for a dataset to a file based on this
+# name (starting with "features-", suffixed "-1" and "-2" for train and test).
+# This simply prints the feature names, one per line.
+# printFeatures = english
+
+# Print out features for only the first this many datums, if the value is positive.
+#printFeaturesUpto = -1
+
+# Style in which to print the classifier. One of: HighWeight, HighMagnitude, Collection, AllWeights, WeightHistogram
+printClassifier = "AllWeights"

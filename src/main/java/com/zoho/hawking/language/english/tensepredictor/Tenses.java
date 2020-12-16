@@ -1,0 +1,19 @@
+//$Id$
+package com.zoho.hawking.language.english.tensepredictor;
+
+public enum Tenses {
+    PRESENT_SIMPLE,
+    PRESENT_PERFECT,
+    PRESENT_CONTINUOUS,
+    PRESENT_PERFECT_CONTINUOUS,
+    PAST_SIMPLE,
+    PAST_PERFECT,
+    PAST_CONTINUOUS,
+    PAST_PERFECT_CONTINUOUS,
+    FUTURE_SIMPLE,
+    FUTURE_PERFECT,
+    FUTURE_CONTINUOUS,
+    FUTURE_PERFECT_CONTINUOUS,
+}
+
+
