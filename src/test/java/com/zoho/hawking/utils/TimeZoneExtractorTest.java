@@ -44,7 +44,7 @@ public class TimeZoneExtractorTest {
   @Test
   public void testReferenceDateExtractor() {
     Date date = new Date(Long.valueOf("1607970068198"));
-    DateTimeOffsetReturn dateTimeOffsetReturn = new DateTimeOffsetReturn(new Date(Long.valueOf("1607939468000")), "-03:00"); //No I18N
+    DateTimeOffsetReturn dateTimeOffsetReturn = new DateTimeOffsetReturn(new Date(Long.valueOf("1607959268000")), "-03:30"); //No I18N
     assertEquals(dateTimeOffsetReturn.getReferenceDate(),
         TimeZoneExtractor.referenceDateExtractor(date, new HawkingConfiguration(), "5 PM Uruguay Time").getReferenceDate()); //No I18N
   }
@@ -54,7 +54,7 @@ public class TimeZoneExtractorTest {
    */
   @Test
   public void testOffsetDateConverter() {
-    assertEquals(new Date(Long.valueOf("1608000668000")), TimeZoneExtractor.offsetDateConverter(Long.valueOf("1607970068198"), "-03:00"));
+    assertEquals(new Date(Long.valueOf("1607980868000")), TimeZoneExtractor.offsetDateConverter(Long.valueOf("1607970068198"), "-03:00"));
   }
 
   /**
@@ -62,7 +62,7 @@ public class TimeZoneExtractorTest {
    */
   @Test
   public void testDateFormatter() {
-    assertEquals("2020-12-15T08:21:08", TimeZoneExtractor.dateFormatter(Long.valueOf("1608000668000"))); //No I18N
+    assertEquals("2020-12-15T02:51:08", TimeZoneExtractor.dateFormatter(Long.valueOf("1608000668000"))); //No I18N
 
   }
 }

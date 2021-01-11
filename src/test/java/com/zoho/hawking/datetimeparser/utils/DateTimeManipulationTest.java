@@ -33,7 +33,7 @@ public class DateTimeManipulationTest {
   @Test
   public void testGetStartOrEndTime() {
     DateTime dateTime = new DateTime(Long.valueOf("1608457980000"));
-    assertEquals(new DateTime(Long.valueOf("1608402600000")),
+    assertEquals(new DateTime(Long.valueOf("1608422400000")),
         DateTimeManipulation.getStartOrEndTime(dateTime, 1, 3));
   }
 
@@ -227,7 +227,7 @@ public class DateTimeManipulationTest {
   @Test
   public void testNthHourDay() {
     DateTime dateTime = new DateTime(Long.valueOf("1607952668000"));
-    assertEquals(new DateTime(Long.valueOf("1607884268000")),
+    assertEquals(new DateTime(Long.valueOf("1607905868000")),
         DateTimeManipulation.nthHourDay(dateTime, 2, 0));
   }
 
@@ -237,7 +237,7 @@ public class DateTimeManipulationTest {
   @Test
   public void testRecentPastHour() {
     DateTime dateTime = new DateTime(Long.valueOf("1607952668000"));
-    assertEquals(new DateTime(Long.valueOf("1607920268000")),
+    assertEquals(new DateTime(Long.valueOf("1607941868000")),
         DateTimeManipulation.recentPastHour(dateTime, 10));
   }
 
@@ -247,7 +247,7 @@ public class DateTimeManipulationTest {
   @Test
   public void testRecentFutureHour() {
     DateTime dateTime = new DateTime(Long.valueOf("1607952668000"));
-    assertEquals(new DateTime(Long.valueOf("1608006668000")),
+    assertEquals(new DateTime(Long.valueOf("1608028268000")),
         DateTimeManipulation.recentFutureHour(dateTime, 10));
   }
 
@@ -291,7 +291,7 @@ public class DateTimeManipulationTest {
   @Test
   public void testSetMinute() {
     DateTime dateTime = new DateTime(Long.valueOf("1607952668000"));
-    assertEquals(new DateTime(Long.valueOf("1607953808000")),
+    assertEquals(new DateTime(Long.valueOf("1607952008000")),
         DateTimeManipulation.setMinute(dateTime, 20));
   }
 

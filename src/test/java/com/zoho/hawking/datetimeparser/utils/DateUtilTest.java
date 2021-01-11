@@ -32,7 +32,7 @@ public class DateUtilTest {
    */
   @Test
   public void testStringToDate() throws Exception {
-    assertEquals(new Date(Long.valueOf("1601577000000")), DateUtil
+    assertEquals(new Date(Long.valueOf("1601596800000")), DateUtil
         .stringToDate("02/10/2020", new DateTime(Long.valueOf("1607952668000")), "dd/MM/YYYY"));
   }
 
