@@ -41,7 +41,17 @@ public class DateTimeProperties {
         return componentsMap;
     }
 
+
+
     private ParserOutput parserOutput = new ParserOutput();
+
+    public void setParserOutput(ParserOutput parserOutput) {
+        this.parserOutput = parserOutput;
+    }
+    public void setDateGroup(DateGroup dateGroup) {
+        this.dateGroup = dateGroup;
+    }
+
     private DateGroup dateGroup = new DateGroup();
     private ParsedDate parsedDate;
     private DateTimeEssentials dateTimeEssentials;
@@ -164,10 +174,10 @@ public class DateTimeProperties {
         componentsMap = Recognizer.tagPredictor(parsedText, parserDate.getOutputWithOffsets());
         setParserOutput(parserDate);
         parserOutput.setIsExactTimePresent(
-                parserDate.getTaggedWithXML().contains("exact_time") || //No I18N
-                        parserDate.getTaggedWithXML().contains("hour_span") || //No I18N
-                        parserDate.getTaggedWithXML().contains("minute_span") || //No I18N
-                        parserDate.getTaggedWithXML().contains("second_span")); //No I18N
+            parserDate.getTaggedWithXML().contains("exact_time") || //No I18N
+                parserDate.getTaggedWithXML().contains("hour_span") || //No I18N
+                parserDate.getTaggedWithXML().contains("minute_span") || //No I18N
+                parserDate.getTaggedWithXML().contains("second_span")); //No I18N
     }
 
     private String removeTimeZone(String parsedText) {
