@@ -1,6 +1,7 @@
 //$Id$
 package com.zoho.hawking;
 
+
 import com.zoho.hawking.datetimeparser.DateAndTime;
 import com.zoho.hawking.datetimeparser.DateTimeParser;
 import com.zoho.hawking.datetimeparser.configuration.Configuration;
@@ -27,40 +28,48 @@ public class HawkingTimeParser {
 
     private static final Logger LOGGER = Logger.getLogger(HawkingTimeParser.class.getName());
 
-     public static void main(String[] args) throws Exception {
-      Scanner s = new Scanner(System.in);
-      HawkingTimeParser parser = new HawkingTimeParser();
-      while(true) {
-          LOGGER.info("Give input: ");
-          String inputText = s.nextLine();
-          HawkingConfiguration hawkingConfiguration = new HawkingConfiguration();
-          Date referenceDate = new Date();
-          LOGGER.info("referenceDate ::::: "+referenceDate);
-          hawkingConfiguration.setFiscalYearStart(2);
-          hawkingConfiguration.setFiscalYearEnd(1);
-          LOGGER.info("Give Timezone: ");
-          String inputText2 = s.nextLine();
-          hawkingConfiguration.setTimeZone(inputText2);
-          DatesFound datesFound = parser.parse(inputText, referenceDate, hawkingConfiguration, "eng"); //No I18N
-        LOGGER.info("DATES FOUND ::  "+ datesFound.toString());
-          getDateText(inputText, "eng"); //No I18N
-      }
-     }
+    public static void main(String[] args) throws Exception {
+        Scanner s = new Scanner(System.in);
+        HawkingTimeParser parser = new HawkingTimeParser();
+        while(true) {
+            LOGGER.info("Give input: ");
+            String inputText = s.nextLine();
+            HawkingConfiguration hawkingConfiguration = new HawkingConfiguration();
+            Date referenceDate = new Date();
+            LOGGER.info("referenceDate ::::: "+referenceDate);
+            hawkingConfiguration.setFiscalYearStart(2);
+            hawkingConfiguration.setFiscalYearEnd(1);
+            LOGGER.info("Give Timezone: ");
+            String inputText2 = s.nextLine();
+            hawkingConfiguration.setTimeZone(inputText2);
+            DatesFound datesFound = parser.parse(inputText, referenceDate, hawkingConfiguration, "eng"); //No I18N
+            LOGGER.info("DATES FOUND ::  "+ datesFound.toString());
+            getDateText(inputText, "eng"); //No I18N
+        }
+    }
 
 
 
     public DatesFound parse(String inputSentence, Date referenceDate, HawkingConfiguration config, String lang) {
         Configuration configuration = new Configuration(config);
         ConfigurationConstants.setConfiguration(configuration);
+        List<ParserOutput> parserOutputs = new ArrayList<>();
+        List<DateGroup> dateGroups = new ArrayList<>();
+        DatesFound datesFound = new DatesFound();
 
         AbstractLanguage abstractLanguage = LanguageFactory.getLanguageImpl(lang);
 
-        List<DateTimeProperties> dateTimePropertiesList = abstractLanguage.predict(inputSentence, referenceDate, config);
-
-        DatesFound datesFound = setDateAndTime(dateTimePropertiesList, abstractLanguage);
+        List<DateTimeProperties> dateList = abstractLanguage.predict(inputSentence, referenceDate, config);
+        for (DateTimeProperties date : dateList) {
+            parserOutputs.add(date.getParserOutput());
+            dateGroups.add(date.getDateGroup());
+        }
+        datesFound.setParserOutputs(parserOutputs);
+        datesFound.setDateGroups(dateGroups);
         LOGGER.info(datesFound.toString());
         return DateTimeProperties.emptyDatesRemover(datesFound);
     }
+
 
     public static List<DateInfo> getDateText(String inputSentence, String lang) {
         List<DateInfo> dateList = new ArrayList<>();
@@ -98,32 +107,24 @@ public class HawkingTimeParser {
     }
 
 
-    public static DatesFound setDateAndTime(List<DateTimeProperties> dateTimePropertiesList, AbstractLanguage abstractLanguage) {
-        DatesFound datesFound = new DatesFound();
-        List<ParserOutput> parserOutputs = new ArrayList<>();
-        List<DateGroup> dateGroups = new ArrayList<>();
-        for(DateTimeProperties dateTimeProperties: dateTimePropertiesList){
-            DateAndTime dateAndTime = DateTimeParser.timeParser(
-                    dateTimeProperties.getReferenceTime() != null ? dateTimeProperties.getReferenceTime() : dateTimeProperties.getDateTimeEssentials().getReferenceTime(),
-                    dateTimeProperties.getDateTimeEssentials().getTense(),
-                    dateTimeProperties.getComponentsMap(),
-                    abstractLanguage);
-            DateTime start = dateAndTime.getStart() != null ? new DateTime(TimeZoneExtractor.offsetDateConverter(dateAndTime.getStart().getMillis(), dateTimeProperties.getDateTimeEssentials().getTimeZoneOffSet())) : null;
-            DateTime end = dateAndTime.getEnd() != null ? new DateTime(TimeZoneExtractor.offsetDateConverter(dateAndTime.getEnd().getMillis(), dateTimeProperties.getDateTimeEssentials().getTimeZoneOffSet())) : null;
-            String startFormat = dateAndTime.getStart() != null ? TimeZoneExtractor.dateFormatter(dateAndTime.getStart().getMillis()) : null;
-            String endFormat = dateAndTime.getEnd() != null ? TimeZoneExtractor.dateFormatter(dateAndTime.getEnd().getMillis()) : null;
-            DateRange dateRange = new DateRange("", start, end, startFormat, endFormat); //No I18N
-            ParserOutput parserOutput = new ParserOutput();
-            parserOutput.setTimezoneOffset(dateTimeProperties.getDateTimeEssentials().getTimeZoneOffSet());
-            parserOutput.setDateRange(dateRange);
-            parserOutput.setIsTimeZonePresent(TimeZoneExtractor.isTimeZonePresent);
-            parserOutputs.add(parserOutput);
-            DateGroup dateGroup = dateAndTime.getDateGroup();
-            dateGroup.setExpression(Constants.OPEN_PARENTHESIS + parserOutput.getId() + Constants.CLOSE_PARENTHESIS);
-            dateGroups.add(dateGroup);
-        }
-        datesFound.setParserOutputs(parserOutputs);
-        datesFound.setDateGroups(dateGroups);
-        return datesFound;
+    public static Pair<ParserOutput, DateGroup> setDateAndTime(DateTimeProperties dateTimeProperties, AbstractLanguage abstractLanguage) {
+        ParserOutput parserOutput = dateTimeProperties.getParserOutput();
+        DateTimeEssentials dateTimeEssentials = dateTimeProperties.getDateTimeEssentials();
+        DateAndTime dateAndTime = DateTimeParser.timeParser(
+            dateTimeProperties.getReferenceTime() != null ? dateTimeProperties.getReferenceTime() : dateTimeEssentials.getReferenceTime(),
+            dateTimeProperties.getDateTimeEssentials().getTense(),
+            dateTimeProperties.getComponentsMap(),
+            abstractLanguage);
+        DateTime start = dateAndTime.getStart() != null ? new DateTime(TimeZoneExtractor.offsetDateConverter(dateAndTime.getStart().getMillis(), dateTimeEssentials.getTimeZoneOffSet())) : null;
+        DateTime end = dateAndTime.getEnd() != null ? new DateTime(TimeZoneExtractor.offsetDateConverter(dateAndTime.getEnd().getMillis(), dateTimeEssentials.getTimeZoneOffSet())) : null;
+        String startFormat = dateAndTime.getStart() != null ? TimeZoneExtractor.dateFormatter(dateAndTime.getStart().getMillis()) : null;
+        String endFormat = dateAndTime.getEnd() != null ? TimeZoneExtractor.dateFormatter(dateAndTime.getEnd().getMillis()) : null;
+        DateRange dateRange = new DateRange("", start, end, startFormat, endFormat); //No I18N
+        parserOutput.setTimezoneOffset(dateTimeEssentials.getTimeZoneOffSet());
+        parserOutput.setDateRange(dateRange);
+        parserOutput.setIsTimeZonePresent(TimeZoneExtractor.isTimeZonePresent);
+        DateGroup dateGroup = dateAndTime.getDateGroup();
+        dateGroup.setExpression(Constants.OPEN_PARENTHESIS + parserOutput.getId() + Constants.CLOSE_PARENTHESIS);
+        return Pair.of(parserOutput, dateGroup);
     }
 }

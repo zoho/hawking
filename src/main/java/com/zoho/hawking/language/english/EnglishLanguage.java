@@ -1,13 +1,9 @@
 package com.zoho.hawking.language.english;
 
 import com.zoho.hawking.datetimeparser.configuration.HawkingConfiguration;
-import com.zoho.hawking.datetimeparser.constants.Tense;
 import com.zoho.hawking.language.AbstractLanguage;
-import com.zoho.hawking.language.ModelInput;
-import com.zoho.hawking.language.english.model.DateGroup;
 import com.zoho.hawking.language.english.model.DateTimeEssentials;
 import com.zoho.hawking.language.english.model.DateTimeOffsetReturn;
-import com.zoho.hawking.language.english.model.ParserOutput;
 import com.zoho.hawking.language.english.tensepredictor.SentenceTensePredictor;
 import com.zoho.hawking.utils.CoreNlpUtils;
 import com.zoho.hawking.utils.DateTimeProperties;
@@ -18,7 +14,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class EnglishLanguage extends AbstractLanguage {
@@ -57,16 +52,13 @@ public class EnglishLanguage extends AbstractLanguage {
         List<DateTimeProperties> dateList = new ArrayList<>();
         inputSentence = inputSentence.replaceAll("\n",". "); //NO I18n
         List<String> inputSentences = CoreNlpUtils.sentenceTokenize(inputSentence);
-        List<ParserOutput> parserOutputs = new ArrayList<>();
-        List<DateGroup> dateGroups = new ArrayList<>();
         for(String sent: inputSentences){
             List<Pair<Boolean, List<Triple<String, Integer, Integer>>>> singleDatesList = getSeparateDates(Parser.parse(sent));
             for (Pair<Boolean, List<Triple<String, Integer, Integer>>> relAndDate : singleDatesList) {
-
-                boolean relationExist = relAndDate.getLeft();
                 List<Triple<String, Integer, Integer>> triples = relAndDate.getRight();
                 DateTimeEssentials dateTimeEssentials = new DateTimeEssentials();
                 dateTimeEssentials.setParagraph(inputSentence);
+                dateTimeEssentials.addId();
                 dateTimeEssentials.setSentence(sent);
                 dateTimeEssentials.setTriples(relAndDate);
                 dateTimeEssentials.setTense(getTense(sent));
@@ -82,9 +74,11 @@ public class EnglishLanguage extends AbstractLanguage {
                     }
                     dateTimeEssentials.setReferenceTime(dateTimeOffsetReturn.getReferenceDate());
                     dateTimeEssentials.setTimeZoneOffSet(dateTimeOffsetReturn.getTimeOffset());
-                    DateTimeProperties dateTimeProperties = new DateTimeProperties(dateTimeEssentials, dateTimeEssentials.getTriples().get(0));
-                    dateTimeProperties.setParsedDate();
-                    dateList.add(dateTimeProperties);
+                    try {
+                        dateList.addAll(DateTimeGateWay.getDateAndTime(dateTimeEssentials));
+                    } catch (Exception e) {
+                        LOGGER.info("HawkingTimeParser :: Exception in Hawking :: Unparsed date component Present");
+                    }
                 }
 
 
