@@ -27,11 +27,6 @@ public class Parser {
         Properties props = new Properties();
         try {
             props.load(CommonUtils.readIsFromClasspath(Constants.PARSERPROPSPATH));
-            File dateGazetteFile = CommonUtils.readFileFromClasspath(props.getProperty("distSimLexicon")); //No I18N
-            assert dateGazetteFile != null;
-            props.setProperty("distSimLexicon", dateGazetteFile.getAbsolutePath()); //No I18N
-            String gazette = generateGazette(dateGazetteFile.getAbsolutePath());
-            props.setProperty("gazette", gazette); //No I18N
             SeqClassifierFlags flags = new SeqClassifierFlags(props);
             CRFClassifier<CoreLabel> crf = new CRFClassifier<CoreLabel>(flags);
             InputStream parserModel = IOUtils.getInputStreamFromURLOrClasspathOrFileSystem(Constants.PARSERMODELPATH);

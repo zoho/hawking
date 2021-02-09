@@ -101,13 +101,6 @@
                             <resources>
                                 <!-- zip-task -->
                                 <resource>
-                                    <directory>${basedir}/src/main/resources/</directory>
-                                    <includes>
-                                        <include>parser/date-gazette.txt</include>
-                                        <include>recognizer/gazette.txt</include>
-                                    </includes>
-                                </resource>
-                                <resource>
                                     <directory>${project.build.directory}/</directory>
                                     <includes>
                                         <include>hawking-time-parser.jar</include>

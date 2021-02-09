@@ -39,11 +39,6 @@ public class Recognizer {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Recognizer :: Error While Loading model", e.getMessage()); //No I18N
         }
-        File gazetteFile = CommonUtils.readFileFromClasspath(props.getProperty("distSimLexicon")); //No I18N
-        assert gazetteFile != null;
-        props.setProperty("distSimLexicon", gazetteFile.getAbsolutePath()); //No I18N
-        props.setProperty("gazette", gazetteFile.getAbsolutePath()); //No I18N
-
         SeqClassifierFlags flags = new SeqClassifierFlags(props);
         CRFClassifier<CoreLabel> crf = new CRFClassifier<>(flags);
         try {

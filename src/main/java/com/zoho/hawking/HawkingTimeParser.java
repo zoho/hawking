@@ -44,7 +44,6 @@ public class HawkingTimeParser {
             hawkingConfiguration.setTimeZone(inputText2);
             DatesFound datesFound = parser.parse(inputText, referenceDate, hawkingConfiguration, "eng"); //No I18N
             LOGGER.info("DATES FOUND ::  "+ datesFound.toString());
-            getDateText(inputText, "eng"); //No I18N
         }
     }
 
