@@ -143,17 +143,17 @@ noMidNGrams = true
 # If this number is positive, n-grams above this size will not be used in the model
 #maxNGramLeng = -1
 
-useGazettes = true
+#useGazettes = false
 
 # one or more filenames (names separated by a comma, semicolon or space).
 
-gazette=/recognizer/gazette.txt;
+#gazette=/recognizer/gazette.txt;
 
 # If true, a gazette feature fires when all tokens of a gazette entry match
-cleanGazette = true
+#cleanGazette = true
 
 # If true, a gazette feature fires when any token of a gazette entry matches
-sloppyGazette = false
+#sloppyGazette = false
 
 # undocumented features, but part of the featuresC() method in NERFeatureFactory.java
 #checkNameList=true
@@ -171,14 +171,14 @@ sloppyGazette = false
 useOccurrencePatterns = true
 
 # Load a file of distributional similarity classes (specified by distSimLexicon) and use it for features
-useDistSim = true
+#useDistSim = false
 
 # Files should be formatted as tab separated rows where each row is a word/class pair. alexclark=word first, terrykoo=class first
 distSimFileFormat = terrykoo
 
 # The file to be loaded for distsim classes.
 
-distSimLexicon = recognizer/gazette.txt
+#distSimLexicon = recognizer/gazette.txt
 
 # keep word case when reading from the lexicon
 casedDistSim = false

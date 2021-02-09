@@ -29,6 +29,7 @@ class HawkingDemo {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+    assert datesFound != null;
     LOGGER.info("DATES FOUND ::  "+ datesFound.toString());
   }
 
