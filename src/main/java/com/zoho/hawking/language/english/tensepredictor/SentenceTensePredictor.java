@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 
 public class SentenceTensePredictor {
 
-    private static final Logger LOGGER = Logger.getLogger(HawkingTimeParser.class.getName());
-
     private static final Tense PRESENT_SIMPLE =
             new Tense(Tenses.PRESENT_SIMPLE.name(), TenseClass.PRESENT.name(), TenseClass.PRESENT.name());
     private static final Tense PRESENT_CONTINUOUS =
@@ -47,7 +45,6 @@ public class SentenceTensePredictor {
     public static Tense getSentenceTense(String sentence) {
         long st = System.currentTimeMillis();
         GrammaticalStructure grammaticalStructure = CoreNlpUtils.getParsedDependency(sentence).get(0);
-        LOGGER.info("Time for parsing is " + (System.currentTimeMillis() - st));
         Root root = null;
         Root tmpRoot = null;
         String rootWord = null;

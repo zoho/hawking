@@ -20,7 +20,7 @@
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
-            <version>3.8.0</version>
+            <version>4.2.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>

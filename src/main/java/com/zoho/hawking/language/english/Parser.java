@@ -41,7 +41,6 @@ public class Parser {
     }
 
     public static List<Triple<String, Integer, Integer>> parse(String input) {
-        LOGGER.info(crf.classifyWithInlineXML(input));
         return crf.classifyToCharacterOffsets(input);
     }
 

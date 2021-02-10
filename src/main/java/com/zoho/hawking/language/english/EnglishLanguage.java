@@ -24,7 +24,6 @@ public class EnglishLanguage extends AbstractLanguage {
     private static final Logger LOGGER = Logger.getLogger(EnglishLanguage.class.getName());
 
     public  List<Pair<Boolean, List<Triple<String, Integer, Integer>>>> getSeparateDates(List<Triple<String, Integer, Integer>> allDates) {
-        LOGGER.info("Give input: "+ allDates);
         List<Pair<Boolean, List<Triple<String, Integer, Integer>>>> separateDates = new ArrayList<>();
         int startIndex = 0;
         int endIndex = 0;
