@@ -170,7 +170,6 @@ public class DateTimeProperties {
         ParsedDate parserDate = Recognizer.recognize(parsedText);
         tagAlternator(parsedText, parserDate);
         tagShrinker(parsedText, parserDate);
-        LOGGER.info("Give input: "+ parserDate.getTaggedWithXML());
         componentsMap = Recognizer.tagPredictor(parsedText, parserDate.getOutputWithOffsets());
         setParserOutput(parserDate);
         parserOutput.setIsExactTimePresent(
@@ -334,7 +333,6 @@ public class DateTimeProperties {
                     Triple<String, Integer, Integer> triplePrev = i > 0 ? triples.get(i - 1) : null;
                     String tagPrev = triplePrev != null ? triplePrev.first() : null;
                     if (tagg != null && (NUMBERFORMAT_1DIGIT.matcher(text).find() || NUMBERFORMAT_23DIGIT.matcher(text).find()) && (tagg.equals("exact_time") || tagg.equals("hour_span") || tagg.equals("day_span") || tagg.equals("week_span") || tagg.equals("month_span") || tagg.equals("year_span") || tagg.equals("exact_year") || tagg.equals("month_of_year") || tagg.equals("minute_span") || tagg.equals("second_span"))) {
-                        LOGGER.info(" Date is  an  hr span format");
                     } else if (!((triples.size() == 2 || triples.size() == 3) && (tagPrev != null && tagPrev.equals("month_of_year")))) {
                         Triple<String, Integer, Integer> tr = new Triple<>("exact_time", triple.second(), triple.third()); //No I18N
                         triples.set(i, tr);

@@ -1171,7 +1171,6 @@ public class TimeZoneExtractor {
                 timezoneFinal = timezone;
             }
         }
-        LOGGER.info("TimeZoneExtractor :: TimeZone In Text :: " + timezoneFinal);
 
         if (timezoneFinal != null) {
             boolean daylightRefDateStart = TimeZone.getTimeZone(timezoneFinal)
@@ -1182,7 +1181,6 @@ public class TimeZoneExtractor {
                 LOGGER.info("TimeZoneExtractor :: TimeZone is in Daylight");
             }
         }
-        LOGGER.info("TimeZoneExtractor :: TimeZone OFFSET :: " + timezoneOffset);
         return timezoneOffset;
     }
 

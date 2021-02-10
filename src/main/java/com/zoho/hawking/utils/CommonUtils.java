@@ -7,25 +7,12 @@ import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
 public class CommonUtils {
 
-    private final static Logger LOGGER = Logger.getLogger(CommonUtils.class.getName());
-
-
     //Class path utils
     public static InputStream readIsFromClasspath(String fileName) {
-        LOGGER.info(fileName);
         return CommonUtils.class.getClassLoader().getResourceAsStream(fileName);
-    }
-
-    public static File readFileFromClasspath(String fileName) {
-        URL fileUrl = CommonUtils.class.getClassLoader().getResource(fileName);
-        if (fileUrl == null) {
-            return null;
-        }
-        return new File(fileUrl.getFile());
     }
 
     //String builder utils
