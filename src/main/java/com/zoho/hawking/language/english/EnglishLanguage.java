@@ -4,7 +4,6 @@ import com.zoho.hawking.datetimeparser.configuration.HawkingConfiguration;
 import com.zoho.hawking.language.AbstractLanguage;
 import com.zoho.hawking.language.english.model.DateTimeEssentials;
 import com.zoho.hawking.language.english.model.DateTimeOffsetReturn;
-import com.zoho.hawking.language.english.tensepredictor.SentenceTensePredictor;
 import com.zoho.hawking.utils.CoreNlpUtils;
 import com.zoho.hawking.utils.DateTimeProperties;
 import com.zoho.hawking.utils.TimeZoneExtractor;
@@ -89,6 +88,6 @@ public class EnglishLanguage extends AbstractLanguage {
 
     @Override
     public String getTense(String inputText) {
-        return SentenceTensePredictor.getSentenceTense(inputText).getTenseClass();
+        return CoreNlpUtils.getParsedDependency(inputText).getTenseClass();
     }
 }

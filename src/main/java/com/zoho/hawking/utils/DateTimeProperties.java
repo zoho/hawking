@@ -4,7 +4,6 @@ package com.zoho.hawking.utils;
 import com.zoho.hawking.HawkingTimeParser;
 import com.zoho.hawking.language.english.Recognizer;
 import com.zoho.hawking.datetimeparser.DateAndTime;
-import com.zoho.hawking.datetimeparser.DateTimeParser;
 import com.zoho.hawking.datetimeparser.utils.NumberParser;
 import com.zoho.hawking.language.english.model.*;
 import edu.stanford.nlp.util.Triple;
@@ -148,28 +147,12 @@ public class DateTimeProperties {
         parserOutput.setParserEndIndex(parsedTextIndexInPara + parsedText.length());
     }
 
-//    public void setDateAndTime() {
-//        DateAndTime dateAndTime = DateTimeParser.timeParser(
-//            referenceTime != null ? referenceTime : dateTimeEssentials.getReferenceTime(),
-//            dateTimeEssentials.getTense(),
-//            componentsMap);
-//        DateTime start = dateAndTime.getStart() != null ? new DateTime(TimeZoneExtractor.offsetDateConverter(dateAndTime.getStart().getMillis(), dateTimeEssentials.getTimeZoneOffSet())) : null;
-//        DateTime end = dateAndTime.getEnd() != null ? new DateTime(TimeZoneExtractor.offsetDateConverter(dateAndTime.getEnd().getMillis(), dateTimeEssentials.getTimeZoneOffSet())) : null;
-//        String startFormat = dateAndTime.getStart() != null ? TimeZoneExtractor.dateFormatter(dateAndTime.getStart().getMillis()) : null;
-//        String endFormat = dateAndTime.getEnd() != null ? TimeZoneExtractor.dateFormatter(dateAndTime.getEnd().getMillis()) : null;
-//        DateRange dateRange = new DateRange("", start, end, startFormat, endFormat); //No I18N
-//        parserOutput.setTimezoneOffset(dateTimeEssentials.getTimeZoneOffSet());
-//        parserOutput.setDateRange(dateRange);
-//        parserOutput.setIsTimeZonePresent(TimeZoneExtractor.isTimeZonePresent);
-//        setDateGroup(dateAndTime);
-//    }
+
 
     public void setParsedDate() {
         parsedText = removeTimeZone(parsedText);
         parsedText = cardinalNumberFinder(parsedText);
         ParsedDate parserDate = Recognizer.recognize(parsedText);
-        tagAlternator(parsedText, parserDate);
-        tagShrinker(parsedText, parserDate);
         componentsMap = Recognizer.tagPredictor(parsedText, parserDate.getOutputWithOffsets());
         setParserOutput(parserDate);
         parserOutput.setIsExactTimePresent(
@@ -277,122 +260,5 @@ public class DateTimeProperties {
         date.setDateGroups(dateGroup);
         date.setParserOutputs(parserOutput);
         return date;
-    }
-
-    private void tagShrinker(String parseText, ParsedDate parserDateCurrent) {
-        List<Triple<String, Integer, Integer>> triples = parserDateCurrent.getOutputWithOffsets();
-        for (int i = 0; i < triples.size(); i++) {
-            Triple<String, Integer, Integer> triple = triples.get(i);
-            String tag = triple.first();
-            String textOne = parseText.substring(triple.second(), triple.third());
-
-            Triple<String, Integer, Integer> triplee = i != (triples.size() - 1) ? triples.get(i + 1) : null;
-            String textTwo = triplee != null ? parseText.substring(triplee.second(), triplee.third()) : null;
-            String tagg = triplee != null ? triplee.first() : " "; //NO I18n
-
-            if (tag.equals("exact_time") && tagg.equals("exact_time")) {
-                Triple<String, Integer, Integer> tripleLocal = new Triple<>("exact_time", triple.second(), triplee.third());  //NO I18n
-                triples.remove(i + 1);
-                triples.set(i, tripleLocal);
-                parserDateCurrent.setOutputWithoffsets(triples);
-                parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_time>" + textOne + "</exact_time> " + "<exact_time> " + textTwo + "</exact_time>", "<exact_time>" + textOne + textTwo + "</exact_time>"));  //NO I18n
-            }
-            Triple<String, Integer, Integer> triplePrev = i > 0 ? triples.get(i - 1) : null;
-            String tagPrev = triplePrev != null ? triplePrev.first() : null;
-
-            if (tag.equals("exact_number") && tagg.equals("exact_time") && !((tagPrev.equals("month_of_year")) && (TIMEFORMATREGEX.matcher(textTwo).find() || TIMEFORMATREGEXHMS.matcher(textTwo).find()))) {
-                Triple<String, Integer, Integer> tripleLocal = new Triple<>("exact_time", triple.second(), triplee.third());  //NO I18n
-                triples.remove(i + 1);
-                triples.set(i, tripleLocal);
-                parserDateCurrent.setOutputWithoffsets(triples);
-                parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_number>" + textOne + "</exact_number> " + "<exact_time>" + textTwo + "</exact_time>", "<exact_time>" + textOne + ":" + textTwo + "</exact_time>"));  //NO I18n
-                parsedText = parsedText.replace(textOne + " " + textTwo, textOne + ":" + textTwo);  //NO I18n
-                parsedText = parsedText.replace("to:", "to ");//NO I18n
-            }
-        }
-
-    }
-
-    private void tagAlternator(String parseText, ParsedDate parserDateCurrent) {
-        String inputSentence = dateTimeEssentials.getSentence();
-        List<Triple<String, Integer, Integer>> triples = parserDateCurrent.getOutputWithOffsets();
-        String tag_xml = parserDateCurrent.getTaggedWithXML();
-        for (int i = 0; i < triples.size(); i++) {
-            Triple<String, Integer, Integer> triple = triples.get(i);
-            String tag = triple.first();
-            String text = parseText.substring(triple.second(), triple.third());
-            Triple<String, Integer, Integer> triplee = i != (triples.size() - 1) ? triples.get(i + 1) : null;
-            String tagg = triplee != null ? triplee.first() : null;
-            if (tag.equals("exact_number") || tag.equals("exact_year")) {
-                if (DATEFORMATREGEX.matcher(text).find()) {
-                    Triple<String, Integer, Integer> tr = new Triple<>("exact_date", triple.second(), triple.third()); //No I18N
-                    triples.set(i, tr);
-                    parserDateCurrent.setOutputWithoffsets(triples);
-                    parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_number>" + text + "</exact_number>", "<exact_date>" + text + "</exact_date>")); //No I18N
-                } else if (!(NUMBERFORMAT_23DIGIT.matcher(text).find()) && (TIMEFORMATREGEX.matcher(text).find()) || ((tagg != null) && ((NUMBERFORMAT_4DIGIT.matcher(text).find()) && (tagg.equals("hour_span"))))) {
-                    Triple<String, Integer, Integer> triplePrev = i > 0 ? triples.get(i - 1) : null;
-                    String tagPrev = triplePrev != null ? triplePrev.first() : null;
-                    if (tagg != null && (NUMBERFORMAT_1DIGIT.matcher(text).find() || NUMBERFORMAT_23DIGIT.matcher(text).find()) && (tagg.equals("exact_time") || tagg.equals("hour_span") || tagg.equals("day_span") || tagg.equals("week_span") || tagg.equals("month_span") || tagg.equals("year_span") || tagg.equals("exact_year") || tagg.equals("month_of_year") || tagg.equals("minute_span") || tagg.equals("second_span"))) {
-                    } else if (!((triples.size() == 2 || triples.size() == 3) && (tagPrev != null && tagPrev.equals("month_of_year")))) {
-                        Triple<String, Integer, Integer> tr = new Triple<>("exact_time", triple.second(), triple.third()); //No I18N
-                        triples.set(i, tr);
-                        parserDateCurrent.setOutputWithoffsets(triples);
-                        if (tag.equals("exact_number")) {
-                            parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_number>" + text + "</exact_number>", "<exact_time>" + text + "</exact_time>"));//No I18N
-                        } else {
-                            parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_year>" + text + "</exact_year>", "<exact_time>" + text + "</exact_time>")); //No I18N
-                        }
-                    }
-                }
-            } else if (tag.equals("exact_date") && (!(inputSentence.matches((".*(equals |equal to |= |=)" + text))))) { //No I18N
-                if (TIMEFORMATREGEX.matcher(text).find() || TIMEFORMATREGEXHMS.matcher(text).find()) {
-                    Triple<String, Integer, Integer> tr = new Triple<>("exact_time", triple.second(), triple.third()); //No I18N
-                    triples.set(i, tr);
-                    parserDateCurrent.setOutputWithoffsets(triples);
-                    parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_date>" + text + "</exact_date>", "<exact_time>" + text + "</exact_time>")); //No I18N
-                } else if (NUMBERFORMATREGEX.matcher(text).find()) {
-                    Triple<String, Integer, Integer> tr = new Triple<>("exact_number", triple.second(), triple.third()); //No I18N
-                    triples.set(i, tr);
-                    parserDateCurrent.setOutputWithoffsets(triples);
-                    parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_date>" + text + "</exact_date>", "<exact_number>" + text + "</exact_number>")); //No I18N
-                } else if(MONTHOFYEAR.matcher(text).find()){
-                    Triple<String, Integer, Integer> tr = new Triple<>("month_of_year", triple.second(), triple.third()); //No I18N
-                    triples.set(i, tr);
-                    parserDateCurrent.setOutputWithoffsets(triples);
-                    parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_date>" + text + "</exact_date>", "<month_of_year>" + text + "</month_of_year>")); //No I18N
-
-                }
-            } else if (tag.equals("exact_time")) {
-                if (DATEMONTHFORMATREGEX.matcher(text).find()) {
-                    Triple<String, Integer, Integer> tr = new Triple<>("exact_date", triple.second(), triple.third()); //No I18N
-                    triples.set(i, tr);
-                    parserDateCurrent.setOutputWithoffsets(triples);
-                    parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_time>" + text + "</exact_time>", "<exact_date>" + text + "</exact_date>")); //No I18N
-                }
-
-            } else if (tag.equals("implict_prefix") && triples.size() == 1) {
-                Triple<String, Integer, Integer> tr = new Triple<>("exact_date", triple.second(), triple.third()); //No I18N
-                triples.set(i, tr);
-                parserDateCurrent.setOutputWithoffsets(triples);
-                parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<implict_prefix>" + text + "</implict_prefix>", "<exact_date>" + text + "</exact_date>")); //No I18N
-            }
-        }
-
-        if (tag_xml.contains("day_of_week") && tag_xml.contains("month_of_year") && tag_xml.contains("exact_number")) {
-            List<Triple<String, Integer, Integer>> triple = parserDateCurrent
-                .getOutputWithOffsets();
-            String date_xml = parserDateCurrent.getTaggedWithXML();
-            for (int i = 0; i < triple.size(); i++) {
-                Triple<String, Integer, Integer> triplet = triples.get(i);
-                String tag = triplet.first();
-                if (tag.equals("day_of_week")) {
-                    String text = parseText.substring(triplet.second(), triplet.third());
-                    triple.remove(i);
-                    parserDateCurrent.setOutputWithoffsets(triple);
-                    parserDateCurrent.setTaggedWithXML(date_xml.replace("<day_of_week>" + text + "</day_of_week>", "")); //No I18N//No I18N
-                }
-            }
-
-        }
     }
 }

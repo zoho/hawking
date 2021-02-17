@@ -4,62 +4,49 @@ package com.zoho.hawking.language.english;
 import com.zoho.hawking.language.english.model.ParsedDate;
 import com.zoho.hawking.language.english.tagpredictor.TagPredictor;
 import com.zoho.hawking.language.english.tagpredictor.TagUtils;
-import com.zoho.hawking.utils.CommonUtils;
-import com.zoho.hawking.utils.Constants;
-import edu.stanford.nlp.ie.crf.CRFClassifier;
-import edu.stanford.nlp.io.IOUtils;
-import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.sequences.SeqClassifierFlags;
+
+import com.zoho.hawking.utils.RecognizerTagger;
 import edu.stanford.nlp.util.Triple;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class Recognizer {
     private static final Logger LOGGER = Logger.getLogger(Recognizer.class.getName());
 
-    static CRFClassifier<CoreLabel> crf = null;
-
-    public static synchronized CRFClassifier<CoreLabel> getCrfClassifier() {
-        if (crf == null) {
-            crf = getCRFInstance();
-        }
-        return crf;
-    }
-
-
-    private static CRFClassifier<CoreLabel> getCRFInstance() {
-        Properties props = new Properties();
-        try {
-            props.load(CommonUtils.readIsFromClasspath(Constants.RECOGIZERPROPSPATH));
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Recognizer :: Error While Loading model", e.getMessage()); //No I18N
-        }
-        SeqClassifierFlags flags = new SeqClassifierFlags(props);
-        CRFClassifier<CoreLabel> crf = new CRFClassifier<>(flags);
-        try {
-            InputStream recognizerModel = IOUtils.getInputStreamFromURLOrClasspathOrFileSystem(Constants.RECOGNIZERMODELPATH);
-            LOGGER.info("Recognizer :: Loading Recognizer Model"); //No I18N
-            crf.loadClassifier(recognizerModel);
-            LOGGER.info("Recognizer :: Recognizer Model Loaded"); //No I18N
-        } catch (ClassCastException | ClassNotFoundException | IOException e) {
-            LOGGER.log(Level.SEVERE, "Recognizer :: Error While Loading model", e.getMessage()); //No I18N
-        }
-        return crf;
-    }
+    private final static Pattern TIMEFORMATREGEX = Pattern
+        .compile("^(((0[0-9]|1[0-9]|2[0-3]|[0-9])([:.][0-5][0-9])?([:.][0-5][0-9])?)([AaPp][Mm]))$");
+    private final static Pattern TIMEFORMATREGEXHMS = Pattern
+        .compile("^(((0[0-9]|1[0-9]|2[0-3]|[0-9])([:.][0-5][0-9])([:.][0-5][0-9])?))$");
 
     public static ParsedDate recognize(String input) {
-        String taggedWithXML = getCrfClassifier().classifyWithInlineXML(input);
-        List<Triple<String, Integer, Integer>> outputWithOffsets = getCrfClassifier().classifyToCharacterOffsets(input);
+        input = input.toLowerCase();
+        StringBuilder taggedWithXML = new StringBuilder();
         ParsedDate parsedDate = new ParsedDate();
-        parsedDate.setOutputWithoffsets(outputWithOffsets);
-        parsedDate.setTaggedWithXML(taggedWithXML);
-        return parsedDate;
+        String[] tokens = input.split("\\s+");
+        List<Triple<String, Integer, Integer>> dateList = new ArrayList<>();
+        int start = 0;
+        int end = 0;
+        for (String word : tokens) {
+            String tag = RecognizerTagger.getTagger(word);
+            end = start + word.length();
+            if(tag.equals("")){
+                LOGGER.info("Word not Found in Recoginzer::::"+ word+":::::");
+                start = end+1;
+                continue;
+            }
 
+            Triple<String, Integer, Integer> tagReturn = Triple.makeTriple(tag, start, end);
+            taggedWithXML.append("<" + tag + ">" + word.trim() + "</" + tag + "> ");
+            dateList.add(tagReturn);
+            start = end+1;
+        }
+        parsedDate.setOutputWithoffsets(dateList);
+        parsedDate.setTaggedWithXML(taggedWithXML.toString().trim());
+        parsedDate = tagShrinker(input, parsedDate);
+        LOGGER.info("Recoginzer Regex Tagged Sequence::::"+ parsedDate.getTaggedWithXML()+":::::");
+        return parsedDate;
     }
 
     public static Map<String, String> tagPredictor(String input, List<Triple<String, Integer, Integer>> tagList) {
@@ -94,5 +81,47 @@ public class Recognizer {
 
         return TagUtils.tagRegulator(input, tagList, tagsEach);
     }
+    private static  ParsedDate tagShrinker(String parseText, ParsedDate parserDateCurrent) {
+        List<Triple<String, Integer, Integer>> triples = parserDateCurrent.getOutputWithOffsets();
+        for (int i = 0; i < triples.size(); i++) {
+            Triple<String, Integer, Integer> triple = triples.get(i);
+            String tag = triple.first();
+            String textOne = parseText.substring(triple.second(), triple.third());
+
+            Triple<String, Integer, Integer> triplee = i != (triples.size() - 1) ? triples.get(i + 1) : null;
+            String textTwo = triplee != null ? parseText.substring(triplee.second(), triplee.third()) : null;
+            String tagg = triplee != null ? triplee.first() : " "; //NO I18n
+
+            if (tag.equals("exact_time") && tagg.equals("exact_time")) {
+                Triple<String, Integer, Integer> tripleLocal = new Triple<>("exact_time", triple.second(), triplee.third());  //NO I18n
+                triples.remove(i + 1);
+                triples.set(i, tripleLocal);
+                parserDateCurrent.setOutputWithoffsets(triples);
+                parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_time>" + textOne + "</exact_time> " + "<exact_time> " + textTwo + "</exact_time>", "<exact_time>" + textOne + textTwo + "</exact_time>"));  //NO I18n
+            }
+            if (tag.equals("exact_number") && tagg.equals("exact_number")) {
+                Triple<String, Integer, Integer> tripleLocal = new Triple<>("exact_number", triple.second(), triplee.third());  //NO I18n
+                triples.remove(i + 1);
+                triples.set(i, tripleLocal);
+                parserDateCurrent.setOutputWithoffsets(triples);
+                parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_number>" + textOne + "</exact_number> " + "<exact_number> " + textTwo + "</exact_number>", "<exact_number>" + textOne + textTwo + "</exact_number>"));  //NO I18n
+            }
+            Triple<String, Integer, Integer> triplePrev = i > 0 ? triples.get(i - 1) : null;
+            String tagPrev = triplePrev != null ? triplePrev.first() : null;
+
+            if (tag.equals("exact_number") && tagg.equals("exact_time") && !((tagPrev.equals("month_of_year")) && (TIMEFORMATREGEX.matcher(textTwo).find() || TIMEFORMATREGEXHMS.matcher(textTwo).find()))) {
+                Triple<String, Integer, Integer> tripleLocal = new Triple<>("exact_time", triple.second(), triplee.third());  //NO I18n
+                triples.remove(i + 1);
+                triples.set(i, tripleLocal);
+                parserDateCurrent.setOutputWithoffsets(triples);
+                parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_number>" + textOne + "</exact_number> " + "<exact_time>" + textTwo + "</exact_time>", "<exact_time>" + textOne + " " + textTwo + "</exact_time>"));  //NO I18n
+                parseText = parseText.replace(textOne + " " + textTwo, textOne + ":" + textTwo);  //NO I18n
+                parseText = parseText.replace("to:", "to ");//NO I18n
+            }
+        }
+        return parserDateCurrent;
+    }
+
+
 }
 
