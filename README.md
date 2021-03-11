@@ -55,11 +55,8 @@ The models used in Hawking Time Parser in the latest code are listed below.
 *```Parser Model : Custom NER model to parse all dates in a sentence ```
 > src/main/resources/parser/parser.crf.ser.gz
 
-*```Recognizer Model : Custom NER model to parse all dates components in a date text ```
-> src/main/resources/parser/recognizer.crf.ser.gz
-
-*```Stanford NLP POS Tagger, Dependency Parser : Used for Tense Prediction```
-> src/main/resources/tense/english-left3words-distsim.tagger, src/main/resources/tense/english_SD.gz
+*```Stanford NLP POS Tagger: Used for Tense Prediction```
+> src/main/resources/tense/english-left3words-distsim.tagger
 
 ## Key Features
 Here are some key features of Hawking Time Parser,
