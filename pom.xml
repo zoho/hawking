@@ -4,16 +4,43 @@
 
     <groupId>com.zoho</groupId>
     <artifactId>hawking</artifactId>
-    <version>1.0.0</version>
+    <version>0.1.0-rc1</version>
     <packaging>jar</packaging>
+    <name>Hawking</name>
+    <description>Hawking ::: Datetime parser</description>
+    <url>https://github.com/zoho/hawking</url>
 
-    <name>hawking</name>
-    <url>http://maven.apache.org</url>
+    <organization>
+        <name>Zoho</name>
+        <url>https://www.zoho.com</url>
+    </organization>
+
+    <!-- Useless, but required by Maven Central release process. -->
+    <developers>
+        <developer>
+            <name>Zohoites</name>
+            <organization>Zoho</organization>
+            <organizationUrl>https://www.zoho.com</organizationUrl>
+        </developer>
+    </developers>
+
+
+    <licenses>
+        <license>
+            <name>GPL-v3.0</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+        </license>
+        <license>
+            <name>EUPL-v1.1</name>
+            <url>http://joinup.ec.europa.eu/system/files/ES/EUPL%20v.1.1%20-%20Licencia.pdf</url>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -76,8 +103,21 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>hawking-time-parser</finalName>
+        <finalName>hawking-${version}</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${nexus-staging-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <serverId>deployment</serverId>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                    <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
+                    <stagingProgressTimeoutMinutes>60</stagingProgressTimeoutMinutes>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -85,70 +125,6 @@
                 <configuration>
                     <mainClass>com.zoho.hawking.HawkingTimeParser</mainClass>
                 </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.0.2</version>
-                <executions>
-                    <execution>
-                        <id>copy_task-resources-zip_files</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/zipcreation/</outputDirectory>
-                            <resources>
-                                <!-- zip-task -->
-                                <resource>
-                                    <directory>${project.build.directory}/</directory>
-                                    <includes>
-                                        <include>hawking-time-parser.jar</include>
-<!--                                        <include>hawking-time-parser-jar-with-dependencies.jar</include>-->
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy_task-resources-hawking.zip</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/../build/CRMINTELLIGENCE/output</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}</directory>
-                                    <includes>
-                                        <include>hawking.zip</include>
-                                    </includes>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
-                <executions>
-                    <execution>
-                        <id>Spark-sql_2.11-2.3.0-ziptask</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <zip basedir="${project.build.directory}/zipcreation"
-                                     destfile="${project.build.directory}/hawking.zip"/>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
