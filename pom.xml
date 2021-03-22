@@ -42,7 +42,14 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
     </properties>
-
+    
+    <distributionManagement>
+        <snapshotRepository>
+            <id>deployment</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </snapshotRepository>
+    </distributionManagement>
+         
     <dependencies>
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
