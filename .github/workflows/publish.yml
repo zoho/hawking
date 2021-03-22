@@ -10,6 +10,12 @@ jobs:
       - name: Set version
         id: vars
         run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Check output
         run: echo "publishing release for Hawking-$RELEASE_VERSION"
         env:
@@ -21,12 +27,6 @@ jobs:
           server-id: deployment
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
       - name: Publish to the Maven Central Repository
         run: mvn --batch-mode deploy
         env:
