@@ -1,4 +1,4 @@
-name: master-test
+name: master
 
 on:
   push:
