@@ -1,5 +1,5 @@
 <h1 align="center">HAWKING</h1>
-(https://github.com/zoho/hawking/actions/workflows/master_test.yml/badge.svg)
+[GITHUB-BADGE](https://github.com/zoho/hawking/actions/workflows/master_test.yml/badge.svg)
 <p align="center"><strong>A natural language date parser written in Java</strong></p>
 <p align="center">
         <a href="#about">About</a> •
