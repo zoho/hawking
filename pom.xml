@@ -24,6 +24,10 @@
         </developer>
     </developers>
 
+    <scm>
+        <url>https://github.com/zoho/hawking</url>
+        <connection>scm:git:https://github.com/zoho/hawking.git</connection>
+    </scm>
 
     <licenses>
         <license>
