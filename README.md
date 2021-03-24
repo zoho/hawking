@@ -32,22 +32,27 @@ Start : 2021-12-20T00:00:00.000+05:30
 End : 2021-12-20T23:59:59.000+05:30
 ```
 Check out the Demo file:
-[```HawkingDemo```](https://github.com/zohocatalyst/hawking/tree/master/src/main/java/com/zoho/hawking/HawkingDemo.java)
+[```HawkingDemo```](https://github.com/zoho/hawking/tree/master/src/main/java/com/zoho/hawking/HawkingDemo.java)
 
-## Build Instructions
-Here are some helpful instructions to use the latest code:
+### Releases
+[Release 0.1.0](https://github.com/zoho/hawking/releases/tag/0.1.0) is the current latest release.
+This release is considered stable.
 
-#### Provided Build
+Available in the [Maven Central repository](https://search.maven.org/artifact/com.zoho/hawking/0.1.0/jar)
 
-We will provide updated models/jars here which have the latest version of the code.
+**Maven configuration:**
+```xml
+<dependency>
+  <groupId>com.zoho</groupId>
+  <artifactId>hawking</artifactId>
+  <version>0.1.0</version>
+</dependency>
+```
 
-At present, you can always build the very latest from GitHub HEAD yourself from [the current released version of the code](https://github.com/zohocatalyst/hawking)
-
-#### Build with Maven
-
-1. Make sure you have Maven installed, details here: [https://maven.apache.org/](https://maven.apache.org/)
-2. If you run this command in the Hawking directory: `mvn package` , it should run the tests and build this jar file: `hawking/target/hawking-time-parser.jar`
-3. Make sure all the models, configuration files from latest version of code is updated.
+**Gradle configuration:**
+```groovy
+compile 'com.zoho:hawking:0.1.0'
+```
 
 #### Models
 The models used in Hawking Time Parser in the latest code are listed below.
