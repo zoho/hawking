@@ -191,7 +191,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
                 <configuration>
-                    <mainClass>com.zoho.hawking.HawkingTimeParser</mainClass>
+                    <mainClass>com.zoho.hawking.HawkingDemo</mainClass>
                 </configuration>
             </plugin>
         </plugins>
