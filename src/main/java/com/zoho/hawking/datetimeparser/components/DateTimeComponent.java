@@ -50,9 +50,9 @@ public abstract class DateTimeComponent {
     }
 
     private void setReferenceDateTime() {
-//        if (dateAndTime.getPreviousDependency() != null && dateAndTime.getStart() != null) {
-//            dateAndTime.setDateAndTime(dateAndTime.getStart());
-//        }
+        if (dateAndTime.getPreviousDependency() != null && dateAndTime.getStart() != null) {
+            dateAndTime.setDateAndTime(dateAndTime.getStart());
+        }
     }
 
     abstract void extractComponentsTags();
