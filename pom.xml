@@ -7,7 +7,7 @@
     <version>0.1.0</version>
     <packaging>jar</packaging>
     <name>Hawking</name>
-    <description>Hawking ::: Datetime parser</description>
+    <description>Hawking is a natural language date time parser that extracts date and time from text with context and parse to the required format.</description>
     <url>https://github.com/zoho/hawking</url>
 
     <organization>
