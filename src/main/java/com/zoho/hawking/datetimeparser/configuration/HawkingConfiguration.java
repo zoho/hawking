@@ -54,7 +54,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many years the year mean.recommended 1
+     * @param year represent how many years the year mean.recommended 1
      */
     public void setYear(int year) {
         this.year = year;
@@ -68,7 +68,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many years the year mean.recommended 2 or greater than 1
+     * @param years represent how many years the year mean.recommended 2 or greater than 1
      */
     public void setYears(int years) {
         this.years = years;
@@ -82,7 +82,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many months the month mean.recommended 1
+     * @param month represent how many months the month mean.recommended 1
      */
     public void setMonth(int month) {
         this.month = month;
@@ -96,7 +96,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many months the months mean.recommended 2 or greater than 1
+     * @param months represent how many months the months mean.recommended 2 or greater than 1
      */
     public void setMonths(int months) {
         this.months = months;
@@ -110,7 +110,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many weeks the week mean.recommended 1
+     * @param week represent how many weeks the week mean.recommended 1
      */
     public void setWeek(int week) {
         this.week = week;
@@ -124,7 +124,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many weeks the weeks mean.recommended 2 or greater than 1
+     * @param weeks represent how many weeks the weeks mean.recommended 2 or greater than 1
      */
     public void setWeeks(int weeks) {
         this.weeks = weeks;
@@ -138,7 +138,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many days the day mean.recommended 1
+     * @param day represent how many days the day mean.recommended 1
      */
     public void setDay(int day) {
         this.day = day;
@@ -152,7 +152,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many days the days mean.recommended 2 or greater than 1
+     * @param days  represent how many days the days mean.recommended 2 or greater than 1
      */
     public void setDays(int days) {
         this.days = days;
@@ -166,7 +166,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many seconds the second mean.recommended 1
+     * @param second represent how many seconds the second mean.recommended 1
      */
     public void setSecond(int second) {
         this.second = second;
@@ -180,7 +180,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many seconds the seconds mean.recommended 2 or greater than 1
+     * @param seconds represent how many seconds the seconds mean.recommended 2 or greater than 1
      */
     public void setSeconds(int seconds) {
         this.seconds = seconds;
@@ -194,7 +194,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many hours the hour mean.recommended 1
+     * @param hour represent how many hours the hour mean.recommended 1
      */
     public void setHour(int hour) {
         this.hour = hour;
@@ -208,7 +208,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many hours the hours mean.recommended 2 or greater than 1
+     * @param hours represent how many hours the hours mean.recommended 2 or greater than 1
      */
     public void setHours(int hours) {
         this.hours = hours;
@@ -222,7 +222,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many minutes the minute mean.recommended 1
+     * @param minute represent how many minutes the minute mean.recommended 1
      */
     public void setMinute(int minute) {
         this.minute = minute;
@@ -236,7 +236,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many minutes the minutes mean.recommended 2 or greater than 1
+     * @param minutes represent how many minutes the minutes mean.recommended 2 or greater than 1
      */
     public void setMinutes(int minutes) {
         this.minutes = minutes;
@@ -250,7 +250,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param customDate the customDate to set
+     * @param customDate customDate the customDate to set
      */
     public void setCustomDate(int customDate) {
         this.customDate = customDate;
@@ -278,7 +278,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param represent how many span the few mean.recommended 4 or greater than 4
+     * @param few represent how many span the few mean.recommended 4 or greater than 4
      */
     public void setFew(int few) {
         this.few = few;
@@ -292,7 +292,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param set 0 for result to start from next year or 1 to include the current year
+     * @param yearSpan set 0 for result to start from next year or 1 to include the current year
      *            example statement next 2 years
      *            current year 2018
      *            0 - (2019 - 2020)
@@ -310,7 +310,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param set 0 for result to start from next month or 1 to include the current month
+     * @param monthSpan set 0 for result to start from next month or 1 to include the current month
      *            example statement next 2 months
      *            current month July
      *            0 - (August - September)
@@ -328,7 +328,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param set 0 for result to start from next week or 1 to include the current week
+     * @param weekSpan set 0 for result to start from next week or 1 to include the current week
      *            example statement next 2 weeks
      *            current week July 01, 2018 - July 07, 2018
      *            0 - (July 08, 2018 - July 21, 2018)
@@ -346,7 +346,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param set 0 for result to start from next day or 1 to include the current day
+     * @param daySpan set 0 for result to start from next day or 1 to include the current day
      *            example statement next 2 days
      *            current day Thu
      *            0 - (Fri - Sat)
@@ -364,7 +364,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param set 0 for result to start from next hour or 1 to include the current hour
+     * @param hourSpan set 0 for result to start from next hour or 1 to include the current hour
      *            example statement next 2 hours
      *            current hour 17:00
      *            0 - (18:00 - 19:00)
@@ -382,7 +382,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param set 0 for result to start from next minute or 1 to include the current minute
+     * @param minuteSpan set 0 for result to start from next minute or 1 to include the current minute
      *            example statement next 30 minutes
      *            current hour 17:30
      *            0 - (17:31 - 18:00)
@@ -400,7 +400,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param set 0 for result to start from next second or 1 to include the current second
+     * @param secondSpan set 0 for result to start from next second or 1 to include the current second
      *            example statement next 30 seconds
      *            current hour 17:30:00
      *            0 - (17:30:01 - 17:30:30)
@@ -570,7 +570,7 @@ public class HawkingConfiguration {
     }
 
     /**
-     * @param WeekRange represent whether to return full weekspan where includes current month and next month
+     * @param weekRange represent whether to return full weekspan where includes current month and next month
      *                  example current month July
      *                  query last week
      *                  weekStart - Sunday
