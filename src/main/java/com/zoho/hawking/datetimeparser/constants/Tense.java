@@ -10,7 +10,9 @@ public enum Tense {
 
     IMMEDIATE_FUTURE(4),
 
-    FUTURE(5);
+    IMMEDIATE(5),
+
+    FUTURE(6);
 
     private final int value;
 

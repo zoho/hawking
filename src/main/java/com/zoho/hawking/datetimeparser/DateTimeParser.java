@@ -89,10 +89,9 @@ public class DateTimeParser {
                 dateTimeComponent.immediateFuture();
             } else if (abstractLanguage.remainder.contains(dateTimeComponent.tenseIndicator)) {
                 dateTimeComponent.remainder();
+            } else if (abstractLanguage.immediate.contains(dateTimeComponent.tenseIndicator)) {
+                dateTimeComponent.immediate();
             }
-//            } else if (EnglishWordConfiguration.IMMEDIATE.contains(dateTimeComponent.tenseIndicator)) {
-//                dateTimeComponent.immediate();
-//            } //TODO
         } else {
             if (dateTimeComponent.sentenceTense.equals("")) {
                 dateTimeComponent.sentenceTense = "PRESENT"; //No I18N

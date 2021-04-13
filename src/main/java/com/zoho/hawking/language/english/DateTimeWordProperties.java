@@ -53,9 +53,9 @@ public class DateTimeWordProperties {
     public static final WordProperty UPCOMING = new WordProperty("upcoming", Tense.IMMEDIATE_FUTURE); //No I18N
     public static final WordProperty COMING = new WordProperty("coming", Tense.IMMEDIATE_FUTURE); //No I18N
     /*Tense Indicator IMMEDIATE*/
-    public static final WordProperty THIS = new WordProperty("this", Tense.IMMEDIATE_FUTURE); //No I18N
-    public static final WordProperty THESE = new WordProperty("these", Tense.IMMEDIATE_FUTURE); //No I18N
-    public static final WordProperty CURRENT = new WordProperty("current", Tense.IMMEDIATE_FUTURE); //No I18N
+    public static final WordProperty THIS = new WordProperty("this", Tense.IMMEDIATE); //No I18N
+    public static final WordProperty THESE = new WordProperty("these", Tense.IMMEDIATE); //No I18N
+    public static final WordProperty CURRENT = new WordProperty("current", Tense.IMMEDIATE); //No I18N
     /*Tense Indicator REMAINDER*/
     public static final WordProperty REST = new WordProperty("rest", WordImplication.REMINDER); //No I18N
     public static final WordProperty REMAIN = new WordProperty("remain", WordImplication.REMINDER); //Stem of the word can also be used (Remainder,Remaining) //No I18N
