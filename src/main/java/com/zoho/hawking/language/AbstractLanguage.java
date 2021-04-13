@@ -39,6 +39,7 @@ public abstract class AbstractLanguage {
     public List<String> immediateFuture;
 
 //    public final List<String> IMMEDIATE = createTenseArray(4, 4);
+    public List<String> immediate;
 
     public List<String> remainder;
 
@@ -109,6 +110,8 @@ public abstract class AbstractLanguage {
         this.presentWords = Utils.createTenseArray(Tense.PRESENT, Tense.PRESENT, allWords);
 
         this.immediateFuture = Utils.createTenseArray(Tense.IMMEDIATE_FUTURE, Tense.IMMEDIATE_FUTURE, allWords);
+
+        this.immediate = Utils.createTenseArray(Tense.IMMEDIATE, Tense.IMMEDIATE, allWords);
 
         this.futureWords = Utils.createTenseArray(Tense.FUTURE, Tense.FUTURE, allWords);
 
