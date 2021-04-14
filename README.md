@@ -35,23 +35,22 @@ Check out the Demo file:
 [```HawkingDemo```](https://github.com/zoho/hawking/tree/master/src/main/java/com/zoho/hawking/HawkingDemo.java)
 
 ### Releases
-[Release 0.1.0](https://github.com/zoho/hawking/releases/tag/0.1.0) is the current latest release.
-This release is considered stable.
+Release [v0.1.1](https://github.com/zoho/hawking/releases/tag/0.1.1) is the latest release.
 
-Available in the [Maven Central repository](https://search.maven.org/artifact/com.zoho/hawking/0.1.0/jar)
+Available in the [Maven Central repository](https://mvnrepository.com/artifact/com.zoho/hawking/0.1.1)
 
 **Maven configuration:**
 ```xml
 <dependency>
   <groupId>com.zoho</groupId>
   <artifactId>hawking</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
 </dependency>
 ```
 
 **Gradle configuration:**
 ```groovy
-compile 'com.zoho:hawking:0.1.0'
+compile 'com.zoho:hawking:0.1.1'
 ```
 
 #### Models
@@ -171,4 +170,4 @@ Hawking time parser supports business date cases like Fiscal year, Financial yea
 ```
 Users can set configuration for the Fiscal year start and end too based on their business model (February to January or April to March...)
 
-***To understand the Hawking configuration input, check:*** [HawkingConfiguration](https://github.com/zohocatalyst/hawking/blob/master/src/main/java/com/zoho/hawking/datetimeparser/configuration/HawkingConfiguration.java)
+***To understand the Hawking configuration input, check:*** [HawkingConfiguration](https://github.com/zoho/hawking/blob/master/src/main/java/com/zoho/hawking/datetimeparser/configuration/HawkingConfiguration.java)
