@@ -167,8 +167,10 @@ public class DateTimeProperties {
         for (String timezone : TimeZoneExtractor.timeZoneList) {
             if (isContain(parsedText, timezone)) {
                 returnText = parsedText.replaceAll("\\b(?i)" + timezone + "\\b", ""); //No I18N
-                returnText = returnText.replaceAll(",", " "); //No I18N
+                returnText = returnText.replaceAll("([,“”\"~()@])", " "); //No I18N
+                returnText = returnText.replaceAll("(hrs|hr|Hr|Hrs)", " hrs"); //No I18N
                 returnText = returnText.replaceAll("date", "day"); //No I18N
+                returnText = returnText.replaceAll("nextweek", "next week"); //No I18N
                 returnText = returnText.replaceAll("Year", "year"); //No I18N
                 returnText = returnText.replaceAll("\\b(?i)" + "final", "last"); //No I18N
                 returnText = returnText.replaceAll("\\.$", " "); //No I18N
@@ -178,11 +180,14 @@ public class DateTimeProperties {
                 returnText = returnText.replaceAll("lunch", "1 PM"); //No I18N
                 returnText = returnText.replaceAll("dinner", "8 PM"); //No I18N
                 returnText = returnText.replaceAll("null",""); //No I18N
+                returnText = returnText.replaceAll("\\s{2,}", " ").trim();//No I18N
                 return returnText;
             }
         }
-        returnText = parsedText.replaceAll(",", " "); //No I18N
+        returnText = parsedText.replaceAll("([,“”\"~()@])", " "); //No I18N
+        returnText = returnText.replaceAll("(hrs|Hrs|Hr|hr)", " hrs"); //No I18N
         returnText = returnText.replaceAll("date", "day"); //No I18N
+        returnText = returnText.replaceAll("nextweek", "next week"); //No I18N
         returnText = returnText.replaceAll("Year", "year"); //No I18N
         returnText = returnText.replaceAll("\\b(?i)" + "final", "last"); //No I18N
         returnText = returnText.replaceAll("\\.$", " ").trim(); //No I18N
@@ -193,6 +198,7 @@ public class DateTimeProperties {
         returnText = returnText.replaceAll("lunch", "1 PM"); //No I18N
         returnText = returnText.replaceAll("dinner", "8 PM"); //No I18N
         returnText = returnText.replaceAll("null",""); //No I18N
+        returnText = returnText.replaceAll("\\s{2,}", " ").trim();//No I18N
         returnText = test.length() > 0 ? returnText : test;
         return returnText;
 

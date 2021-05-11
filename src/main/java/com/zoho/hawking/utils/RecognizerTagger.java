@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 public class RecognizerTagger {
 
   private final static Pattern implictPrefix = Pattern.compile(
-      "^(beginning|upcoming|starting|previous|current|between|coming|within|ending|before|until|after|since|start|forty|this|next|last|past|from|till|rest|most|with|the|for|few|end|in|at|on|of|an|a)$");
+      "^(beginning|upcoming|starting|previous|current|between|coming|within|ending|before|until|after|since|start|forty|this|next|last|past|from|till|rest|most|with|the|for|few|end|in|at|on|of|by|an|a)$");
   private final static Pattern implictPostfix = Pattern.compile("^(back|ago)$");
 
   private final static Pattern second_span = Pattern.compile("^(second|seconds|sec|secs)$");
@@ -29,10 +29,10 @@ public class RecognizerTagger {
   private final static Pattern exact_date_2 = Pattern.compile("^(\\d{1,2})[-/]\\d{1,2}$");
 
   private final static Pattern exact_time_1 = Pattern
-      .compile("^(((0[0-9]|1[0-9]|2[0-3]|[0-9])([:.][0-5][0-9])?([:.][0-5][0-9])?)([AaPp][Mm]))$");
+      .compile("^(((0[0-9]|1[0-9]|2[0-3]|[0-9])([:.][0-5][0-9])?([:.][0-5][0-9])?)([AaPp][.]?[Mm]))$");
   private final static Pattern exact_time_2 = Pattern
       .compile("^(((0[0-9]|1[0-9]|2[0-3]|[0-9])([:.][0-5][0-9])([:.][0-5][0-9])?))$");
-  private final static Pattern exact_time_3 = Pattern.compile("^([AaPp][Mm])$");
+  private final static Pattern exact_time_3 = Pattern.compile("^([AaPp][.]?[Mm])$");
 
   private final static Pattern exact_year = Pattern.compile("^\\d{4}$");
   private final static Pattern exact_number_1 = Pattern.compile(
