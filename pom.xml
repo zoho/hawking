@@ -4,7 +4,7 @@
 
     <groupId>com.zoho</groupId>
     <artifactId>hawking</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <packaging>jar</packaging>
     <name>Hawking</name>
     <description>Hawking is a natural language date time parser that extracts date and time from text with context and parse to the required format.</description>
@@ -33,10 +33,6 @@
         <license>
             <name>GPL-v3.0</name>
             <url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
-        </license>
-        <license>
-            <name>EUPL-v1.1</name>
-            <url>http://joinup.ec.europa.eu/system/files/ES/EUPL%20v.1.1%20-%20Licencia.pdf</url>
         </license>
     </licenses>
 

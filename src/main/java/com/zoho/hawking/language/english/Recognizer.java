@@ -44,6 +44,7 @@ public class Recognizer {
         }
         parsedDate.setOutputWithoffsets(dateList);
         parsedDate.setTaggedWithXML(taggedWithXML.toString().trim());
+        parsedDate = tagAlternator(input, parsedDate);
         parsedDate = tagShrinker(input, parsedDate);
         LOGGER.info("Recoginzer Regex Tagged Sequence::::"+ parsedDate.getTaggedWithXML()+":::::");
         return parsedDate;
@@ -81,7 +82,7 @@ public class Recognizer {
 
         return TagUtils.tagRegulator(input, tagList, tagsEach);
     }
-    private static  ParsedDate tagShrinker(String parseText, ParsedDate parserDateCurrent) {
+    private static ParsedDate tagShrinker(String parseText, ParsedDate parserDateCurrent) {
         List<Triple<String, Integer, Integer>> triples = parserDateCurrent.getOutputWithOffsets();
         for (int i = 0; i < triples.size(); i++) {
             Triple<String, Integer, Integer> triple = triples.get(i);
@@ -117,6 +118,27 @@ public class Recognizer {
                 parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_number>" + textOne + "</exact_number> " + "<exact_time>" + textTwo + "</exact_time>", "<exact_time>" + textOne + " " + textTwo + "</exact_time>"));  //NO I18n
                 parseText = parseText.replace(textOne + " " + textTwo, textOne + ":" + textTwo);  //NO I18n
                 parseText = parseText.replace("to:", "to ");//NO I18n
+            }
+        }
+        return parserDateCurrent;
+    }
+
+    private static ParsedDate tagAlternator(String parseText, ParsedDate parserDateCurrent) {
+        List<Triple<String, Integer, Integer>> triples = parserDateCurrent.getOutputWithOffsets();
+        String tag_xml = parserDateCurrent.getTaggedWithXML();
+        if ((tag_xml.contains("day_of_week") || tag_xml.contains("current_day")) && tag_xml.contains("month_of_year") && tag_xml.contains("exact_number")) {
+            List<Triple<String, Integer, Integer>> triple = parserDateCurrent
+                .getOutputWithOffsets();
+            String date_xml = parserDateCurrent.getTaggedWithXML();
+            for (int i = 0; i < triple.size(); i++) {
+                Triple<String, Integer, Integer> triplet = triples.get(i);
+                String tag = triplet.first();
+                if (tag.equals("day_of_week") || tag.equals("current_day")) {
+                    String text = parseText.substring(triplet.second(), triplet.third());
+                    triple.remove(i);
+                    parserDateCurrent.setOutputWithoffsets(triple);
+                    parserDateCurrent.setTaggedWithXML(date_xml.replace("<day_of_week>" + text + "</day_of_week>", "")); //No I18N
+                }
             }
         }
         return parserDateCurrent;
