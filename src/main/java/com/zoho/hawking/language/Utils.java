@@ -13,7 +13,7 @@ public class Utils {
     public static List<String> createDateWithoutAnyOneOfTheRange(WordImplication wordImplication, WordProperty[] allWords) {
         ArrayList<String> wordList = new ArrayList<>();
         for (WordProperty word : allWords) {
-            if (word.getTense() != null && word.getTense().getValue() <= wordImplication.getValue() && word.getTense().getValue() >= wordImplication.getValue() && word.isAnyRangeNotApplicable()) {
+            if (word.getWordImplication() != null && word.getWordImplication().getValue() <= wordImplication.getValue() && word.getWordImplication().getValue() >= wordImplication.getValue() && word.isAnyRangeNotApplicable()) {
                 wordList.add(word.getWord());
             }
         }

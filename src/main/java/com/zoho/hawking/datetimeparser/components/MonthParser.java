@@ -3,6 +3,7 @@ package com.zoho.hawking.datetimeparser.components;
 
 import com.zoho.hawking.datetimeparser.DateAndTime;
 import com.zoho.hawking.datetimeparser.constants.ConfigurationConstants;
+import com.zoho.hawking.datetimeparser.constants.PrepositionConstants;
 import com.zoho.hawking.language.AbstractLanguage;
 import com.zoho.hawking.language.english.DateTimeWordProperties;
 import com.zoho.hawking.datetimeparser.utils.DateTimeManipulation;
@@ -71,13 +72,13 @@ public class MonthParser extends DateTimeComponent {
         //in last year last month,last month refers to 12th month of the year
         //in order to distinguish between last month and last year last month this check is done
         //TODO
-//        if (!isSet && dateAndTime.getPreviousDependency().equals(Constants.YEAR_SPAN_TAG)) {
-//            if (tenseIndicator.equals(PrepositionConstants.LAST.getWord())) {
-//                isOrdinal = true;
-//                isNumberPresent = true;
-//                nthMonthOfYear = 12;
-//            }
-//        }
+        if (!isSet && dateAndTime.getPreviousDependency().equals(Constants.YEAR_SPAN_TAG)) {
+            if (tenseIndicator.equals(PrepositionConstants.LAST.getWord())) {
+                isOrdinal = true;
+                isNumberPresent = true;
+                nthMonthOfYear = 12;
+            }
+        }
 
         if (isExactTimeSpan && isNumberPresent) {
             isDatePresent = true;

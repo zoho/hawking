@@ -192,7 +192,7 @@ public class WeekParser extends DateTimeComponent {
         } else if (super.abstractLanguage.weekendWords.contains(timeSpan)) {
             dateAndTime.setDateAndTime(DateTimeManipulation.addWeeks(dateAndTime.getDateAndTime(), number, 0).
                     dayOfWeek().setCopy(ConfigurationConstants.getConfiguration().getWeekDayAndEnd().getWeekEndStart()));
-            startWeekIncrement = (number - 1);
+            startWeekIncrement = number != 0 ? (number - 1) : 0;
             endDaysIncrement = ConfigurationConstants.getConfiguration().getWeekDayAndEnd().getWeekEndDiff();
             DateTimeManipulation.setWeekStartAndEndTime(dateAndTime, startWeekIncrement, 0, 0, endDaysIncrement, 1, 2);
         } else {

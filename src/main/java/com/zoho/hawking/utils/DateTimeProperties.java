@@ -236,7 +236,7 @@ public class DateTimeProperties {
     }
 
     public void cleanParsedText(String wordToRemove) {
-        this.parsedText = parsedText.replace(wordToRemove, "");
+        this.parsedText = parsedText.replaceFirst("^"+wordToRemove, "");
     }
     private static Long getStartTimeInLong(List<ParserOutput> datesFound, int index) {
         DateTime startDate = datesFound.get(index).getDateRange().getStart();

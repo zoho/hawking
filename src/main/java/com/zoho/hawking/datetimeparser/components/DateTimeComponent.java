@@ -2,6 +2,8 @@
 package com.zoho.hawking.datetimeparser.components;
 
 import com.zoho.hawking.datetimeparser.DateAndTime;
+import com.zoho.hawking.datetimeparser.constants.ConfigurationConstants;
+import com.zoho.hawking.datetimeparser.constants.PrepositionConstants;
 import com.zoho.hawking.datetimeparser.utils.NumberParser;
 import com.zoho.hawking.datetimeparser.utils.PrepositionParser;
 import com.zoho.hawking.datetimeparser.utils.TagParser;
@@ -123,10 +125,10 @@ public abstract class DateTimeComponent {
 
     private void prefixProcessing() {
         //TODO
-//        if (PrepositionConstants.FEW.getWord().equals(secondaryPrefix)) {
-//            number = ConfigurationConstants.getConfiguration().getRangeDefault().getFew();
-//            isNumberPresent = true;
-//        }
+        if (PrepositionConstants.FEW.getWord().equals(secondaryPrefix)) {
+            number = ConfigurationConstants.getConfiguration().getRangeDefault().getFew();
+            isNumberPresent = true;
+        }
     }
 
     HashMap<String, String> getTagMap() {
@@ -134,10 +136,10 @@ public abstract class DateTimeComponent {
     }
 
     void findSpanRange() {
-//        if (!dateAndTime.getPreviousDependency().equals("")) {
-//            sentenceTense = "PRESENT"; //No I18N
-//            tenseIndicator = "";
-//        }
+        if (!dateAndTime.getPreviousDependency().equals("")) {
+            sentenceTense = "PRESENT"; //No I18N
+            tenseIndicator = "";
+        }
     }
 
 
