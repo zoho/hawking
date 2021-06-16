@@ -48,10 +48,8 @@ public class EnglishLanguage extends AbstractLanguage {
     @Override
     public List<DateTimeProperties> predict(String inputSentence, Date referenceDate, HawkingConfiguration config) {
         List<DateTimeProperties> dateList = new ArrayList<>();
-        inputSentence = inputSentence.replaceAll("\n",". "); //NO I18n
         List<String> inputSentences = CoreNlpUtils.sentenceTokenize(inputSentence);
         for(String sent: inputSentences){
-            sent = sent.replaceAll("\\s{2,}", " ").trim();
             List<Pair<Boolean, List<Triple<String, Integer, Integer>>>> singleDatesList = getSeparateDates(Parser.parse(sent));
             for (Pair<Boolean, List<Triple<String, Integer, Integer>>> relAndDate : singleDatesList) {
                 List<Triple<String, Integer, Integer>> triples = relAndDate.getRight();
