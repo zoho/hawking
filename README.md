@@ -2,7 +2,6 @@
 <p align="center"><strong>A natural language date parser written in Java</strong></p>
 <p align="center">
         <a href="#about">About</a> •
-        <a href="#build-instructions">Build Instructions</a> •
         <a href="#key-features">Key Features</a> •
         <a href="#configurations">Configurations</a>
           <br> <br>
