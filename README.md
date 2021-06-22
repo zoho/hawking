@@ -2,7 +2,6 @@
 <p align="center"><strong>A natural language date parser written in Java</strong></p>
 <p align="center">
         <a href="#about">About</a> •
-        <a href="#build-instructions">Build Instructions</a> •
         <a href="#key-features">Key Features</a> •
         <a href="#configurations">Configurations</a>
           <br> <br>
@@ -35,23 +34,8 @@ Check out the Demo file:
 [```HawkingDemo```](https://github.com/zoho/hawking/tree/master/src/main/java/com/zoho/hawking/HawkingDemo.java)
 
 ### Releases
-Release [v0.1.1](https://github.com/zoho/hawking/releases/tag/0.1.1) is the latest release.
+Hawking date time parser releases are available in the [Maven Central repository](https://mvnrepository.com/artifact/com.zoho/hawking)
 
-Available in the [Maven Central repository](https://mvnrepository.com/artifact/com.zoho/hawking/0.1.1)
-
-**Maven configuration:**
-```xml
-<dependency>
-  <groupId>com.zoho</groupId>
-  <artifactId>hawking</artifactId>
-  <version>0.1.1</version>
-</dependency>
-```
-
-**Gradle configuration:**
-```groovy
-compile 'com.zoho:hawking:0.1.1'
-```
 
 #### Models
 The models used in Hawking Time Parser in the latest code are listed below.
