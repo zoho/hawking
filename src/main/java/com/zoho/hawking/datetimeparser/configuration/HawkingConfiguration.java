@@ -30,6 +30,9 @@ public class HawkingConfiguration {
     private int minuteSpan = 0;
     private int secondSpan = 1;
 
+    private int dayhourStart = 0;
+    private int dayhourEnd = 24;
+
     private int weekDayStart = DateTimeConstants.MONDAY;
     private int weekDayEnd = DateTimeConstants.FRIDAY;
 
@@ -607,8 +610,37 @@ public class HawkingConfiguration {
      * @param timeZone represent whether to set timezone to referenceDate
      *                 IST, PST, CST
      */
+
     public void setTimeZone(String timeZone) {
         this.timeZone = timeZone;
     }
+
+    /**
+     * @return the dayhourStart
+     * */
+
+    public int getDayhourStart() { return dayhourStart; }
+
+    /**
+     * @param dayhourStart represent start of the day hour
+     * range 0-23 , dayhourStart should always less than dayhourEnd
+     * 0 - 12 AM, 1 - 1 AM, 14 - 2 PM
+     */
+
+    public void setDayhourStart(int dayhourStart) { this.dayhourStart = dayhourStart; }
+
+    /**
+     * @return the dayhourEnd
+     */
+
+    public int getDayhourEnd() { return dayhourEnd; }
+
+    /**
+     * @param dayhourEnd represent end of the day hour
+     * range 1-24 , dayhourEnd should always greater than dayhourStart
+     * 17 - 5 PM, 20 - 8 PM, 22 - 10 PM
+     */
+
+    public void setDayhourEnd(int dayhourEnd) { this.dayhourEnd = dayhourEnd; }
 
 }

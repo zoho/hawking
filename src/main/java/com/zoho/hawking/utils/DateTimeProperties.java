@@ -191,7 +191,7 @@ public class DateTimeProperties {
         returnText = returnText.replaceAll("Year", "year"); //No I18N
         returnText = returnText.replaceAll("\\b(?i)" + "final", "last"); //No I18N
         returnText = returnText.replaceAll("\\.$", " ").trim(); //No I18N
-        String test = returnText.replaceAll("^(and |or |to )?\\d*$","");  //No I18N
+        String test = returnText.replaceAll("^(and |or |to )?([1-9][0-9]{0,2}|1000)$","");  //No I18N
         returnText = returnText.replaceAll("^- ", " "); //No I18N
         returnText = returnText.replaceAll("post", "after"); //No I18N
         returnText = returnText.replaceAll("breakfast", "8 AM"); //No I18N
@@ -266,5 +266,34 @@ public class DateTimeProperties {
         date.setDateGroups(dateGroup);
         date.setParserOutputs(parserOutput);
         return date;
+    }
+
+    public static List<ParserOutput> addDefaultTime(List<ParserOutput> parserOutputs, int dayhourStart, int dayhourEnd) {
+        List<ParserOutput> parserOutputsreturn = new ArrayList<>();
+        if(!(dayhourStart == 0 && dayhourEnd == 24)){
+            for (ParserOutput parserOutput : parserOutputs) {
+                DateTime start = parserOutput.getDateRange().getStart();
+                DateTime end = parserOutput.getDateRange().getEnd();
+                String recogizerLabel = "";
+                for (RecognizerOutput recognizerOutput : parserOutput.getRecognizerOutputs()) {
+                    recogizerLabel += " " + recognizerOutput.getRecognizerLabel();
+                }
+                if (!(parserOutput.getIsExactTimePresent()) && !recogizerLabel.contains("part_of_day")) {
+                    if (start != null && end != null) {
+                        parserOutput.getDateRange().setStart(start.plusHours(dayhourStart));
+                        parserOutput.getDateRange().setEnd(start.plusHours(dayhourEnd).minusSeconds(1));
+                    } else if (start != null) {
+                        parserOutput.getDateRange().setStart(start.plusHours(dayhourStart));
+                    } else if (end != null) {
+                        parserOutput.getDateRange().setEnd(end.minusHours((end.getHourOfDay()-dayhourEnd)+1));
+                    }
+                }
+                parserOutputsreturn.add(parserOutput);
+            }
+            return parserOutputsreturn;
+          }
+        else {
+            return parserOutputs;
+        }
     }
 }
