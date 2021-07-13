@@ -637,7 +637,7 @@ public class HawkingConfiguration {
 
     /**
      * @param dayhourEnd represent end of the day hour
-     * range 1-24 , dayhourEnd should always greater than dayhourEnd
+     * range 1-24 , dayhourEnd should always greater than dayhourStart
      * 17 - 5 PM, 20 - 8 PM, 22 - 10 PM
      */
 
