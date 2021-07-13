@@ -43,6 +43,7 @@ public class HawkingTimeParser {
             parserOutputs.add(date.getParserOutput());
             dateGroups.add(date.getDateGroup());
         }
+        parserOutputs = DateTimeProperties.addDefaultTime(parserOutputs, config.getDayhourStart(), config.getDayhourEnd());
         datesFound.setParserOutputs(parserOutputs);
         datesFound.setDateGroups(dateGroups);
         LOGGER.info(datesFound.toString());
