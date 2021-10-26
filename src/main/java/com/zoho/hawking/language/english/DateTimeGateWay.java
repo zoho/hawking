@@ -105,9 +105,9 @@ public class DateTimeGateWay {
       for (Triple<String, Integer, Integer> triple : triples) {
         if (triple.first.equals("R")) {
           String relationWord = dateTimeEssentials.getSentence().substring(triple.second, triple.third).replace("[^a-zA-z]", ""); //No I18N
-          if (PrepositionConstants.RELATIONSHIP_RANGE.contains(relationWord)) {
+          if (PrepositionConstants.RELATIONSHIP_RANGE.contains(relationWord.toLowerCase())) {
             dateType = 0;
-          } else if (PrepositionConstants.RELATIONSHIP_SET.contains(relationWord)) {
+          } else if (PrepositionConstants.RELATIONSHIP_SET.contains(relationWord.toLowerCase())) {
             dateType = 1;
           } else {
             dateType = 2;

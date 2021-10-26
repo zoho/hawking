@@ -195,7 +195,7 @@ public class DateTimeWordProperties {
 
     public static final WordProperty AUGUST = new WordProperty("august", MonthsOfYear.MONTH_EIGHT, new String[]{"aug"});
 
-    public static final WordProperty SEPTEMBER = new WordProperty("september", MonthsOfYear.MONTH_NINE, new String[]{"sep"});
+    public static final WordProperty SEPTEMBER = new WordProperty("september", MonthsOfYear.MONTH_NINE, new String[]{"sep","sept"});
 
     public static final WordProperty OCTOBER = new WordProperty("october", MonthsOfYear.MONTH_TEN, new String[]{"oct"});
 

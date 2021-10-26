@@ -37,7 +37,7 @@ public class RecognizerTagger {
   private final static Pattern exact_year = Pattern.compile("^\\d{4}$");
   private final static Pattern exact_number_1 = Pattern.compile(
       "^(first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth|thirteenth|fourteenth|fifteenth|sixteenth|seventeenth|eightheenth|ninteenth|twentieth|twenty-first|twenty-second|twenty-third|twenty-fourth|twenty-fifth|twenty-sixth|twenty-seventh|twenty-eighth|twenty-ninth|thirtieth|thirty-first|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|st|nd|rd|th)$");
-  private final static Pattern exact_number_2 = Pattern.compile("(\\d+)(st|nd|rd|th|ᵗʰ|ˢᵗ|ⁿᵈ|ʳᵈ)?");
+  private final static Pattern exact_number_2 = Pattern.compile("^((\\d+)(st|nd|rd|th|ᵗʰ|ˢᵗ|ⁿᵈ|ʳᵈ)?)$");
 
   public static String getTagger(String word) {
     String tag = "";
