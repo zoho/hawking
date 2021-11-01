@@ -43,7 +43,6 @@ public class Parser {
     public static List<Triple<String, Integer, Integer>> parse(String input) {
         input = input.replaceAll("http","----"); //No I18N
         input = input.replaceAll("www","---"); //No I18N
-        LOGGER.info(input);
         return crf.classifyToCharacterOffsets(input);
     }
 
