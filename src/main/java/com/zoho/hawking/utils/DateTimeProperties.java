@@ -101,7 +101,7 @@ public class DateTimeProperties {
         } else if (dateText.contains("end day")) {
             dateText = dateText.replaceAll("\\b(?i)" + "end day" + "\\b", "");//No I18N
             dateText = "last day of " + dateText;//No I18N
-        } else if (dateText.contains("to go")) {
+        } else if (dateText.endsWith("to go")) {
             dateText = dateText.replaceAll("\\b(?i)" + "to go" + "\\b", "");//No I18N
             dateText = "until " + dateText;//No I18N
         }

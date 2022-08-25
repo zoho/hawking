@@ -48,6 +48,7 @@ public class HawkingConfiguration {
     private int weekRange = 0;
     private String dateFormat = "";
     private String timeZone = "";
+    private int maxParseDate= 0;
 
     /**
      * @return the year range
@@ -643,4 +644,19 @@ public class HawkingConfiguration {
 
     public void setDayhourEnd(int dayhourEnd) { this.dayhourEnd = dayhourEnd; }
 
+    /**
+     * @return the maximum dates to be parsed
+     * */
+    public int getMaxParseDate() {
+        return maxParseDate;
+    }
+
+    /**
+     * @param maxParseDate represent maximum number of date text to be parsed in a given text
+     * range > 0
+     */
+
+    public void setMaxParseDate(int maxParseDate) {
+        this.maxParseDate = maxParseDate;
+    }
 }

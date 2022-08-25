@@ -108,7 +108,7 @@ public class Recognizer {
                 parserDateCurrent.setTaggedWithXML(parserDateCurrent.getTaggedWithXML().replace("<exact_number>" + textOne + "</exact_number> " + "<exact_number> " + textTwo + "</exact_number>", "<exact_number>" + textOne + textTwo + "</exact_number>"));  //NO I18n
             }
             Triple<String, Integer, Integer> triplePrev = i > 0 ? triples.get(i - 1) : null;
-            String tagPrev = triplePrev != null ? triplePrev.first() : null;
+            String tagPrev = triplePrev != null ? triplePrev.first() : "";
 
             if (tag.equals("exact_number") && tagg.equals("exact_time") && !((tagPrev.equals("month_of_year")) && (TIMEFORMATREGEX.matcher(textTwo).find() || TIMEFORMATREGEXHMS.matcher(textTwo).find()))) {
                 Triple<String, Integer, Integer> tripleLocal = new Triple<>("exact_time", triple.second(), triplee.third());  //NO I18n
@@ -126,7 +126,7 @@ public class Recognizer {
     private static ParsedDate tagAlternator(String parseText, ParsedDate parserDateCurrent) {
         List<Triple<String, Integer, Integer>> triples = parserDateCurrent.getOutputWithOffsets();
         String tag_xml = parserDateCurrent.getTaggedWithXML();
-        if ((tag_xml.contains("day_of_week") || tag_xml.contains("current_day")) && tag_xml.contains("month_of_year") && tag_xml.contains("exact_number")) {
+        if ((tag_xml.contains("day_of_week") || tag_xml.contains("current_day")) && (tag_xml.contains("month_of_year") || tag_xml.contains("month_span")) && tag_xml.contains("exact_number")) {
             List<Triple<String, Integer, Integer>> triple = parserDateCurrent
                 .getOutputWithOffsets();
             String date_xml = parserDateCurrent.getTaggedWithXML();
