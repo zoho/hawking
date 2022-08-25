@@ -49,6 +49,8 @@ public class EnglishLanguage extends AbstractLanguage {
     public List<DateTimeProperties> predict(String inputSentence, Date referenceDate, HawkingConfiguration config) {
         List<DateTimeProperties> dateList = new ArrayList<>();
         List<String> inputSentences = CoreNlpUtils.sentenceTokenize(inputSentence);
+        int maxParseDates = config.getMaxParseDate();
+        int dateCounter = 0;
         for(String sent: inputSentences){
             List<Pair<Boolean, List<Triple<String, Integer, Integer>>>> singleDatesList = getSeparateDates(Parser.parse(sent));
             for (Pair<Boolean, List<Triple<String, Integer, Integer>>> relAndDate : singleDatesList) {
@@ -73,12 +75,14 @@ public class EnglishLanguage extends AbstractLanguage {
                     dateTimeEssentials.setTimeZoneOffSet(dateTimeOffsetReturn.getTimeOffset());
                     try {
                         dateList.addAll(DateTimeGateWay.getDateAndTime(dateTimeEssentials));
+                        dateCounter += 1;
+                        if (maxParseDates != 0 && dateCounter == maxParseDates){
+                            return dateList;
+                        }
                     } catch (Exception e) {
                         LOGGER.info("HawkingTimeParser :: Exception in Hawking :: Unparsed date component Present");
                     }
                 }
-
-
             }
         }
         return dateList;
