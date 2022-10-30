@@ -4,7 +4,7 @@
 
     <groupId>com.zoho</groupId>
     <artifactId>hawking</artifactId>
-    <version>0.1.6</version>
+    <version>0.1.7</version>
     <packaging>jar</packaging>
     <name>Hawking</name>
     <description>Hawking is a natural language date time parser that extracts date and time from text with context and parse to the required format.</description>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
-            <version>4.2.0</version>
+            <version>4.5.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>

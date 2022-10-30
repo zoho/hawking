@@ -132,7 +132,7 @@ conjoinShapeNGrams = true
 useNeighborNGrams = true
 
 # If true, record the NGram features that correspond to a String (under the current option settings) and reuse rather than recalculating if the String is seen again.
-cacheNGrams = true
+cacheNGrams = false
 
 # Do not include character n-gram features for n-grams that contain neither the beginning or end of the word
 noMidNGrams = true
