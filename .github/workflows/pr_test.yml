@@ -1,0 +1,99 @@
+name: pr-test
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+
+      - uses: khan/pull-request-comment-trigger@master
+        id: check
+        with:
+          trigger: 'ci'
+          reaction: rocket
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      - name: send comment 
+        if: steps.check.outputs.triggered == 'true'
+        env:
+          URL: ${{ github.event.issue.comments_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl \
+            -X POST \
+            $URL \
+            -H "Content-Type: application/json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            --data '{ "body": ":test_tube: [starting unit testing]( https://github.com/'"$GITHUB_REPOSITORY"'/actions/runs/'"$GITHUB_RUN_ID"')" }'
+      - name: Github API Request
+        if: steps.check.outputs.triggered == 'true'
+        id: request
+        uses: octokit/request-action@v2.0.0
+        with:
+          route: ${{ github.event.issue.pull_request.url }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get PR informations
+        if: steps.check.outputs.triggered == 'true'
+        id: pr_data
+        run: | 
+            echo "::set-output name=branch::${{ fromJson(steps.request.outputs.data).head.ref }}"
+            echo "::set-output name=repo_name::${{ fromJson(steps.request.outputs.data).head.repo.full_name }}"
+            echo "::set-output name=repo_clone_url::${{ fromJson(steps.request.outputs.data).head.repo.clone_url }}"
+            echo "::set-output name=repo_ssh_url::${{ fromJson(steps.request.outputs.data).head.repo.ssh_url }}"
+      - name: Checkout PR Branch
+        if: steps.check.outputs.triggered == 'true'
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ fromJson(steps.request.outputs.data).head.repo.full_name }}
+          ref: ${{ steps.pr_data.outputs.branch }}
+      - name: debug
+        if: steps.check.outputs.triggered == 'true'
+        id: debug
+        run: |
+          echo ::set-output name=sha::$( curl -u "u:${{github.token}}" https://api.github.com/repos/${{steps.pr_data.outputs.repo_name}}/git/ref/heads/${{steps.pr_data.outputs.branch}} | jq .object.sha | tr -d '"' )
+      - name: Set up JDK 1.8
+        if: steps.check.outputs.triggered == 'true'
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2  
+      - name: Test with Maven
+        if: steps.check.outputs.triggered == 'true'
+        run: mvn --batch-mode --update-snapshots test
+      - name: Create success comment
+        if:  steps.check.outputs.triggered == 'true' &&  success()
+        env:
+          URL: ${{ github.event.issue.comments_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl \
+            -X POST \
+            $URL \
+            -H "Content-Type: application/json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            --data '{ "body": ":v: [finish ci integration job successfully]( https://github.com/'"$GITHUB_REPOSITORY"'/actions/runs/'"$GITHUB_RUN_ID"')" }'
+      - name: Create fail comment
+        if:  steps.check.outputs.triggered == 'true' && failure()
+        env:
+          URL: ${{ github.event.issue.comments_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl \
+            -X POST \
+            $URL \
+            -H "Content-Type: application/json" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            --data '{ "body": ":facepalm: [ci integration job failed]( https://github.com/'"$GITHUB_REPOSITORY"'/actions/runs/'"$GITHUB_RUN_ID"')" }'
