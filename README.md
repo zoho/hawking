@@ -12,7 +12,7 @@
 Given any date expression in a sentence, Hawking will apply standard language recognition and parser techniques to produce a list of corresponding dates with optional parse and syntax information.
 
 It supports for almost every existing date format: absolute dates, relative dates(on Sunday, at 12 PM,
-at 04/11/2021, etc).
+at 04/11/2021, etc)
 
 ###### Here is sample input:
 ``` java
