@@ -43,10 +43,10 @@ jobs:
         if: steps.check.outputs.triggered == 'true'
         id: pr_data
         run: | 
-            echo "::set-output name=branch::${{ fromJson(steps.request.outputs.data).head.ref }}"
-            echo "::set-output name=repo_name::${{ fromJson(steps.request.outputs.data).head.repo.full_name }}"
-            echo "::set-output name=repo_clone_url::${{ fromJson(steps.request.outputs.data).head.repo.clone_url }}"
-            echo "::set-output name=repo_ssh_url::${{ fromJson(steps.request.outputs.data).head.repo.ssh_url }}"
+            echo "::set-output name=branch::${{ secrets.HEAD_REF }}"
+            echo "::set-output name=repo_name::${{ secrets.HEAD_REPO_FULLNAME }}"
+            echo "::set-output name=repo_clone_url::${{ secrets.HEAD_REPO_URL }}"
+            echo "::set-output name=repo_ssh_url::${{ secrets.HEAD_REPO_SSHURL }}"
       - name: Checkout PR Branch
         if: steps.check.outputs.triggered == 'true'
         uses: actions/checkout@v2
