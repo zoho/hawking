@@ -4,7 +4,7 @@
 
     <groupId>com.zoho</groupId>
     <artifactId>hawking</artifactId>
-    <version>0.1.7</version>
+    <version>0.1.8</version>
     <packaging>jar</packaging>
     <name>Hawking</name>
     <description>Hawking is a natural language date time parser that extracts date and time from text with context and parse to the required format.</description>
@@ -54,7 +54,7 @@
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
-            <version>4.5.1</version>
+            <version>4.5.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
@@ -85,12 +85,20 @@
                     <artifactId>javax.json</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>com.io7m.xom</groupId>
+                    <groupId>xom</groupId>
                     <artifactId>xom</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>com.googlecode.efficient-java-matrix-library</groupId>
-                    <artifactId>ejml</artifactId>
+                    <groupId>org.ejml</groupId>
+                    <artifactId>ejml-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.ejml</groupId>
+                    <artifactId>ejml-ddense</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.ejml</groupId>
+                    <artifactId>ejml-simple</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>com.google.protobuf</groupId>
@@ -98,7 +106,7 @@
                 </exclusion>
                 <exclusion>
                     <groupId>org.apache.lucene</groupId>
-                    <artifactId>lucene-queries</artifactId>
+                    <artifactId>lucene-queryparser</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -110,7 +118,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.8.2</version>
+            <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
