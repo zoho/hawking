@@ -168,11 +168,7 @@
                             <goal>sign</goal>
                         </goals>
                         <configuration>
-                            <!-- Prevent `gpg` from using pinentry programs -->
-                            <gpgArguments>
-                                <arg>--pinentry-mode</arg>
-                                <arg>loopback</arg>
-                            </gpgArguments>
+                           <skip>true</skip>
                         </configuration>
                     </execution>
                 </executions>
@@ -196,6 +192,17 @@
                 <version>1.2.1</version>
                 <configuration>
                     <mainClass>com.zoho.hawking.HawkingDemo</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                <source>1.8</source>
+                <target>1.8</target>
+                <release>8</release>
+                <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>
