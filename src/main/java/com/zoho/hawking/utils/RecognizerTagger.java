@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 public class RecognizerTagger {
 
   private final static Pattern implictPrefix = Pattern.compile(
-      "^(beginning|upcoming|starting|previous|current|between|coming|within|ending|before|until|after|since|start|forty|this|next|last|past|from|till|rest|most|with|the|for|few|end|in|at|on|of|by|an|a)$");
+      "^(beginning|upcoming|starting|previous|current|between|around|coming|within|ending|before|until|after|since|start|forty|this|next|last|past|from|till|rest|most|with|the|for|few|end|in|at|on|of|by|an|a)$");
   private final static Pattern implictPostfix = Pattern.compile("^(back|ago)$");
 
   private final static Pattern second_span = Pattern.compile("^(second|seconds|sec|secs)$");

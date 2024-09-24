@@ -179,6 +179,9 @@ public class DateTimeProperties {
                 returnText = returnText.replaceAll("breakfast", "8 AM"); //No I18N
                 returnText = returnText.replaceAll("lunch", "1 PM"); //No I18N
                 returnText = returnText.replaceAll("dinner", "8 PM"); //No I18N
+                returnText = returnText.replaceAll("around", "from"); //No I18N
+                returnText = returnText.endsWith("before") ? returnText.replaceAll("before", "back") : returnText; //No I18N
+                returnText = returnText.replaceAll("(?i)(last week\\s+(of\\s+)?(January|February|March|April|May|June|July|August|September|October|November|December)|((January|February|March|April|May|June|July|August|September|October|November|December)\\s+last week))", "4th week $3$5");
                 returnText = returnText.replaceAll("null",""); //No I18N
                 returnText = returnText.replaceAll("\\s{2,}", " ").trim();//No I18N
                 return returnText;
@@ -197,6 +200,9 @@ public class DateTimeProperties {
         returnText = returnText.replaceAll("breakfast", "8 AM"); //No I18N
         returnText = returnText.replaceAll("lunch", "1 PM"); //No I18N
         returnText = returnText.replaceAll("dinner", "8 PM"); //No I18N
+        returnText = returnText.replaceAll("around", "from"); //No I18N
+        returnText = returnText.endsWith("before") ? returnText.replaceAll("before", "back") : returnText; //No I18N
+        returnText = returnText.replaceAll("(?i)(last week\\s+(of\\s+)?(January|February|March|April|May|June|July|August|September|October|November|December)|((January|February|March|April|May|June|July|August|September|October|November|December)\\s+last week))", "4th week $3$5");
         returnText = returnText.replaceAll("null",""); //No I18N
         returnText = returnText.replaceAll("\\s{2,}", " ").trim();//No I18N
         returnText = test.length() > 0 ? returnText : test;
