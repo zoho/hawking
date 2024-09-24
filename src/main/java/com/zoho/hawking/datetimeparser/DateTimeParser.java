@@ -17,7 +17,7 @@ public class DateTimeParser {
         for (String timeSpan : spanHierarchy) {
             if (componentsMap.get(timeSpan) != null) {
                 DateTimeComponent localDateTimeComponent = getInstance(timeSpan, componentsMap.get(timeSpan), tense, dateAndTime, abstractLanguage);
-                parseDateTimeComponent(localDateTimeComponent, abstractLanguage);
+                parseDateTimeComponent(localDateTimeComponent, abstractLanguage, componentsMap, dateAndTime);
             }
         }
         return dateAndTime;
@@ -69,8 +69,51 @@ public class DateTimeParser {
 
         return localDateTimeComponent;
     }
+    public static int getMonthInt(String monthName) {
+        switch (monthName.toLowerCase()) {
+            case "january":
+            case "jan":
+                return 1;
+            case "february":
+            case "feb":
+                return 2;
+            case "march":
+            case "mar":
+                return 3;
+            case "april":
+            case "apr":
+                return 4;
+            case "may":
+                return 5;
+            case "june":
+            case "jun":
+                return 6;
+            case "july":
+            case "jul":
+                return 7;
+            case "august":
+            case "aug":
+                return 8;
+            case "september":
+            case "sep":
+            case "sept":
+                return 9;
+            case "october":
+            case "oct":
+                return 10;
+            case "november":
+            case "nov":
+                return 11;
+            case "december":
+            case "dec":
+                return 12;
+            default:
+                throw new IllegalArgumentException("Invalid month name: " + monthName);
+        }
+    }
 
-    public static void parseDateTimeComponent(DateTimeComponent dateTimeComponent, AbstractLanguage abstractLanguage) {
+
+    public static void parseDateTimeComponent(DateTimeComponent dateTimeComponent, AbstractLanguage abstractLanguage,  Map<String, String> componentsMap, DateAndTime dateAndTime) {
 
         if (dateTimeComponent.timeSpan.equals("")) {
             return;
@@ -94,8 +137,25 @@ public class DateTimeParser {
             }
         } else {
             if (dateTimeComponent.sentenceTense.equals("")) {
-                dateTimeComponent.sentenceTense = "PRESENT"; //No I18N
+                if (componentsMap.containsKey("month") &&
+                    componentsMap.get("month") != null &&
+                    componentsMap.get("month").contains("month_of_year") &&
+                    componentsMap.entrySet().stream().allMatch(entry ->
+                        (entry.getKey().equals("month") && entry.getValue() != null) || entry.getValue() == null)) {
+                    String monthValue = componentsMap.get("month");
+                    String monthOfYear = monthValue.replaceAll(".*<month_of_year>([^<]*)</month_of_year>.*", "$1").trim();
+                    int monthOfYearInt = getMonthInt(monthOfYear);
+                    int currentMonthInt = dateAndTime.getReferenceTime().getMonthOfYear();
+                    if (monthOfYearInt >= currentMonthInt) {
+                        dateTimeComponent.sentenceTense = "PRESENT"; // Current or future month
+                    } else {
+                        dateTimeComponent.sentenceTense = "PAST"; // Past month
+                    }
+                } else {
+                    dateTimeComponent.sentenceTense = "PRESENT"; // Default assignment
+                }
             }
+
 
             switch (dateTimeComponent.sentenceTense) {
                 case "PAST":
@@ -112,4 +172,5 @@ public class DateTimeParser {
 
         dateTimeComponent.setPreviousDependency();
     }
+
 }

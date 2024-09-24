@@ -126,9 +126,11 @@ public class Recognizer {
     private static ParsedDate tagAlternator(String parseText, ParsedDate parserDateCurrent) {
         List<Triple<String, Integer, Integer>> triples = parserDateCurrent.getOutputWithOffsets();
         String tag_xml = parserDateCurrent.getTaggedWithXML();
-        if ((tag_xml.contains("day_of_week") || tag_xml.contains("current_day")) && (tag_xml.contains("month_of_year") || tag_xml.contains("month_span")) && tag_xml.contains("exact_number")) {
-            List<Triple<String, Integer, Integer>> triple = parserDateCurrent
-                .getOutputWithOffsets();
+        if ((tag_xml.contains("day_of_week") || tag_xml.contains("current_day")) &&
+            (tag_xml.contains("month_of_year") || tag_xml.contains("month_span")) &&
+            tag_xml.contains("exact_number") &&
+            !tag_xml.contains("</day_of_week> <implict_prefix>of</implict_prefix>")) {
+            List<Triple<String, Integer, Integer>> triple = parserDateCurrent.getOutputWithOffsets();
             String date_xml = parserDateCurrent.getTaggedWithXML();
             for (int i = 0; i < triple.size(); i++) {
                 Triple<String, Integer, Integer> triplet = triples.get(i);
