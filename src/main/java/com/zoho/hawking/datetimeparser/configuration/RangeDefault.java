@@ -34,8 +34,8 @@ public class RangeDefault {
         // TODO Auto-generated constructor stub
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields) {
-            Object val = new PropertyDescriptor(field.getName(), hawkingConfiguration.getClass()).getReadMethod().invoke(hawkingConfiguration.getClass());
-            field.set(this.getClass(), val);
+            Object val = new PropertyDescriptor(field.getName(), hawkingConfiguration.getClass()).getReadMethod().invoke(hawkingConfiguration);
+            field.set(this, val);
         }
     }
 
