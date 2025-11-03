@@ -141,8 +141,12 @@ public class CustomDateParser extends DateTimeComponent {
             customSpan = timeSpan;
         } else {
             int modVal = (12 / noOfMonthsInCustom);
-            int customSpanNo = ((currentCustomDate.charAt(1) - 1) + modVal) % modVal;
-            customSpan = (isCurrent || isExactCustom) ? currentCustomDate : currentCustomDate.charAt(0) + "" + (customSpanNo);
+            int currentNo = Character.getNumericValue(currentCustomDate.charAt(1));
+            int customSpanNo = (currentNo - 1);
+            if (customSpanNo < 1) customSpanNo = modVal;
+            customSpan = (isCurrent || isExactCustom)
+                    ? currentCustomDate
+                    : currentCustomDate.charAt(0) + "" + customSpanNo;
         }
         Pair<Integer, Integer> months = customDateMonths.get(customSpan);
         int endMonth = months.getValue();
@@ -167,8 +171,13 @@ public class CustomDateParser extends DateTimeComponent {
             customSpan = timeSpan;
         } else {
             int modVal = (12 / noOfMonthsInCustom);
-            int customSpanNo = ((currentCustomDate.charAt(1) + 1) + modVal) % modVal;
-            customSpan = (isCurrent || isExactCustom) ? currentCustomDate : currentCustomDate.charAt(0) + "" + (customSpanNo);
+            int currentNo = Character.getNumericValue(currentCustomDate.charAt(1));
+            int customSpanNo = (currentNo % modVal) + 1;
+            if (customSpanNo > modVal) customSpanNo = 1;
+            customSpan = (isCurrent || isExactCustom)
+                    ? currentCustomDate
+                    : currentCustomDate.charAt(0) + "" + customSpanNo;
+
         }
         Pair<Integer, Integer> months = customDateMonths.get(customSpan);
         int startMonth = months.getKey();

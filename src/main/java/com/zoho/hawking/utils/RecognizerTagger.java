@@ -1,7 +1,7 @@
 package com.zoho.hawking.utils;
 import java.util.regex.Pattern;
 
-public class RecognizerTagger {
+  public class RecognizerTagger {
 
   private final static Pattern implictPrefix = Pattern.compile(
       "^(beginning|upcoming|starting|previous|current|between|around|coming|within|ending|before|until|after|since|start|forty|this|next|last|past|from|till|rest|most|with|the|for|few|end|in|at|on|of|by|an|a)$");
@@ -15,8 +15,11 @@ public class RecognizerTagger {
       .compile("^(week|weeks|weekend|weekends|weekday|weekdays)$");
   private final static Pattern month_span = Pattern.compile("^(month|months)$");
   private final static Pattern year_span = Pattern.compile("^(year|years)$");
+  private final static Pattern QUARTEROFYEAR = Pattern.compile("^(quarterly|quarter|q1|q2|q3|q4)$");
+  private final static Pattern HALFOFYEAR = Pattern.compile("^(half-yearly|h1|h2)$");
+  private final static Pattern CUSTOMYEAR = Pattern.compile("^(annual year|fiscal year|annualyear|fiscalyear|annual|fiscal)$");
 
-  private final static Pattern part_of_day = Pattern
+    private final static Pattern part_of_day = Pattern
       .compile("^(morning|dawn|noon|afternoon|evening|night|midnight|eve|sunrise|sunset|tonight)$");
   private final static Pattern current_day = Pattern.compile("^(tomorrow|yesterday|now|today)$");
   private final static Pattern day_of_week = Pattern.compile(
@@ -58,6 +61,12 @@ public class RecognizerTagger {
       tag = "exact_time";
     } else if (exact_year.matcher(word).find()) {
       tag = "exact_year";
+    } else if(QUARTEROFYEAR.matcher(word).find()){
+      tag = "quarterofyear"; //No I18N
+    } else if(HALFOFYEAR.matcher(word).find()){
+      tag = "halfofyear"; //No I18N
+    } else if(CUSTOMYEAR.matcher(word).find()){
+      tag = "custom_year"; //No I18N
     } else if (second_span.matcher(word).find()) {
       tag = "second_span";
     } else if (minute_span.matcher(word).find()) {
