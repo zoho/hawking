@@ -12,6 +12,7 @@ import com.zoho.hawking.language.LanguageFactory;
 import com.zoho.hawking.language.english.Parser;
 import com.zoho.hawking.language.english.model.*;
 import com.zoho.hawking.utils.Constants;
+import com.zoho.hawking.utils.CustomDateFormatter;
 import com.zoho.hawking.utils.DateTimeProperties;
 import com.zoho.hawking.utils.TimeZoneExtractor;
 import edu.stanford.nlp.util.Triple;
@@ -35,6 +36,14 @@ public class HawkingTimeParser {
         List<ParserOutput> parserOutputs = new ArrayList<>();
         List<DateGroup> dateGroups = new ArrayList<>();
         DatesFound datesFound = new DatesFound();
+
+        //if input is given  only as datecomponent and max length expected less than 50
+        if (config.isDateComponentOnly() && inputSentence.length() < 50) {
+            inputSentence = CustomDateFormatter.formatDateRange(inputSentence);
+            inputSentence = CustomDateFormatter.formatAndNormalizeDateRange(inputSentence);
+            inputSentence = inputSentence.replaceAll("(?i)\\bcurrent\\b", "today");//No I18N
+            inputSentence = DateTimeProperties.formatDates(inputSentence);
+        }
 
         AbstractLanguage abstractLanguage = LanguageFactory.getLanguageImpl(lang);
         assert abstractLanguage != null;

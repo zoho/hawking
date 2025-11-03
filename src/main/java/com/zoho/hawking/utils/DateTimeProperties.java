@@ -35,6 +35,8 @@ public class DateTimeProperties {
         "Twenty first", "Twenty second", "Twenty third", "Twenty fourth", "Twenty fifth", "Twenty sixth", "Twenty seventh", "Twenty eighth", "Twenty ninth", "Thirtieth", "Thirty first");//No I18N
     private final static Pattern DATETIMEWORDS = Pattern.compile("(afternoon|apr|april|aug|august|dawn|day|days|dec|december|eve|evening|feb|february|fri|friday|hour|hours|jan|january|jul|july|jun|june|mar|march|may|midnight|min|mins|minute|minutes|mon|monday|month|months|morning|night|noon|nov|november|now|oct|october|sat|saturday|sec|second|seconds|secs|sep|sept|september|sun|sunday|thu|thurs|thursday|today|tomorrow|tue|tuesday|wed|wednesday|week|weeks|year|years|yesterday)");
     private final static Pattern NUMBERR_REGEX = Pattern.compile("([0-9])");
+    private static final Pattern FORMAT_DATES_PATTERN = Pattern.compile("(\\b[A-Za-z]{3,9}\\b)[-\\s']+(\\d{2,4}\\b)(?!\\s*:\\d{2})", Pattern.CASE_INSENSITIVE);
+
 
     public Map<String, String> getComponentsMap() {
         return componentsMap;
@@ -167,7 +169,7 @@ public class DateTimeProperties {
         for (String timezone : TimeZoneExtractor.timeZoneList) {
             if (isContain(parsedText, timezone)) {
                 returnText = parsedText.replaceAll("\\b(?i)" + timezone + "\\b", ""); //No I18N
-                returnText = returnText.replaceAll("([,“”\"~()@])", " "); //No I18N
+                returnText = returnText.replaceAll("([,“”\"~()@;])", " "); //No I18N
                 returnText = returnText.replaceAll("(hrs|hr|Hr|Hrs)", " hrs"); //No I18N
                 returnText = returnText.replaceAll("date", "day"); //No I18N
                 returnText = returnText.replaceAll("nextweek", "next week"); //No I18N
@@ -187,7 +189,7 @@ public class DateTimeProperties {
                 return returnText;
             }
         }
-        returnText = parsedText.replaceAll("([,“”\"~()@])", " "); //No I18N
+        returnText = parsedText.replaceAll("([,“”\"~()@;])", " "); //No I18N
         returnText = returnText.replaceAll("(hrs|Hrs|Hr|hr)", " hrs"); //No I18N
         returnText = returnText.replaceAll("date", "day"); //No I18N
         returnText = returnText.replaceAll("nextweek", "next week"); //No I18N
@@ -203,11 +205,38 @@ public class DateTimeProperties {
         returnText = returnText.replaceAll("around", "from"); //No I18N
         returnText = returnText.endsWith("before") ? returnText.replaceAll("before", "back") : returnText; //No I18N
         returnText = returnText.replaceAll("(?i)(last week\\s+(of\\s+)?(January|February|March|April|May|June|July|August|September|October|November|December)|((January|February|March|April|May|June|July|August|September|October|November|December)\\s+last week))", "4th week $3$5");
+        returnText = returnText.replaceAll("(?i)\\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)\\.", "$1"); // No I18N
+        returnText = returnText.replaceAll("fiscal year","fiscalyear"); //No I18N
+        returnText = returnText.replaceAll("annual year","annualyear"); //No I18N
         returnText = returnText.replaceAll("null",""); //No I18N
         returnText = returnText.replaceAll("\\s{2,}", " ").trim();//No I18N
         returnText = test.length() > 0 ? returnText : test;
         return returnText;
 
+    }
+    public static String formatDates(String input) {
+        Matcher matcher = FORMAT_DATES_PATTERN.matcher(input);
+        StringBuffer result = new StringBuffer();
+
+        while (matcher.find()) {
+            String month = matcher.group(1);
+            String year = matcher.group(2);
+
+            // Only adjust if it's a year-like value (2 or 4 digits)
+            if (year.matches("\\d{2}")) {
+                int yearValue = Integer.parseInt(year);
+                if (yearValue >= 50) {
+                    year = "19" + year;
+                } else {
+                    year = "20" + year;
+                }
+            }
+
+            matcher.appendReplacement(result, month + " " + year);
+        }
+
+        matcher.appendTail(result);
+        return result.toString();
     }
 
     public ParsedDate getParsedDate() {

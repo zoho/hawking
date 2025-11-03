@@ -50,6 +50,15 @@ public class HawkingConfiguration {
     private String timeZone = "";
     private int maxParseDate= 0;
 
+    private boolean isDateComponentOnly=false;
+    //if input is given only as datecomponent
+    public boolean isDateComponentOnly() {
+        return isDateComponentOnly;
+    }
+
+    public void setDateComponentOnly(boolean dateComponentOnly) {
+        isDateComponentOnly = dateComponentOnly;
+    }
     /**
      * @return the year range
      */

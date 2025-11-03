@@ -18,8 +18,12 @@ class HawkingDemo {
     HawkingTimeParser parser = new HawkingTimeParser();
     String inputText = "Good morning, Have a nice day. Shall we meet on December 20 ?";
     HawkingConfiguration hawkingConfiguration = new HawkingConfiguration();
-    hawkingConfiguration.setFiscalYearStart(2);
-    hawkingConfiguration.setFiscalYearEnd(1);
+    hawkingConfiguration.setFiscalYearStart(4);
+    hawkingConfiguration.setFiscalYearEnd(3);
+    //hawkingConfiguration.setDateComponentOnly(true);
+    // Strictly Set to false when the input includes general text with embedded date information (e.g., "Meet me at the airport tomorrow 11:20 am")
+    // Set to true when the input contains only date-related text (e.g., "Nov-2024", "12-Dec-2022")
+
     hawkingConfiguration.setTimeZone("IST");
     Date referenceDate = new Date();
     DatesFound datesFound = null;
