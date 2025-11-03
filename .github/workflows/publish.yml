@@ -37,8 +37,15 @@ jobs:
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
+      - name: Configure default GPG key
+        run: |
+          KEY_ID=$(gpg --list-secret-keys --keyid-format=long | grep sec | head -n1 | awk '{print $2}' | cut -d'/' -f2)
+          echo "Using GPG key ID: $KEY_ID"
+          echo "default-key $KEY_ID" >> ~/.gnupg/gpg.conf
+          echo "GPG_TTY=$(tty)" >> $GITHUB_ENV
+
       - name: Publish to the Maven Central Repository
-        run: mvn --batch-mode deploy
+        run: mvn --batch-mode deploy -Dgpg.skip=false -Dgpg.keyname="$KEY_ID"
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
