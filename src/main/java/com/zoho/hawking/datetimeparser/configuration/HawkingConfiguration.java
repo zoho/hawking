@@ -662,7 +662,7 @@ public class HawkingConfiguration {
 
     /**
      * @param maxParseDate represent maximum number of date text to be parsed in a given text
-     * range > 0
+     * range &gt; 0
      */
 
     public void setMaxParseDate(int maxParseDate) {
