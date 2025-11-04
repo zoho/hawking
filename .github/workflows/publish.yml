@@ -7,7 +7,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -40,6 +39,17 @@ jobs:
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Verify GPG import
+        run: gpg --list-secret-keys || echo "No keys found"
+      - name: Verify GPG key import
+        run: |
+          echo "Checking for imported GPG keys..."
+          if gpg --list-secret-keys --keyid-format LONG; then
+            echo "GPG key imported successfully."
+          else
+            echo " No GPG keys found — import failed."
+            exit 1
+          fi
 
       - name: Publish to the Maven Central Repository
         run: mvn --batch-mode clean deploy -DskipTests -DretryFailedDeploymentCount=3
